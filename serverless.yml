@@ -34,6 +34,7 @@ provider:
   timeout:                30
   environment:
     SITE_URL:             ${self:custom.config.siteUrl}
+    API_URL:              ${self:custom.config.apiUrl}
     SQL_ENGINE:           mssql
     SQL_PORT:             1433
     SQL_HOST:             ${ssm:rsmSQLHostPegwebProd}
