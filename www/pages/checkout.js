@@ -358,7 +358,7 @@ class CheckoutPage extends React.Component {
                                              details.purchase_units[0].amount.breakdown.tax_total.value,
                                              details.purchase_units[0].amount.breakdown.shipping.value
                                            )
-                                           this.setState({ orderLink: '/order/' + orderId })
+                                           Router.push('/order/' + orderId)
                                          },
                                          (err) => {
                                            console.log('backend place order error', err)
