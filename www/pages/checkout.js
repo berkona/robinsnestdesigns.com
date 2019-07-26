@@ -348,16 +348,22 @@ class CheckoutPage extends React.Component {
                                      } else {
                                        return mutationFn({ variables: { paypalOrderId }}).then(
                                          () => {
+                                           const orderId = currentUser.getCartId()
                                            currentUser.deleteCartId()
-                                           Router.push('/order/' + currentUser.getCartId())
                                            // TODO: add coupon
-                                           checkoutDoneEvent(cartData.cart.items, paypalOrderId,
+                                           checkoutDoneEvent(
+                                             cartData.cart.items,
+                                             paypalOrderId,
                                              details.purchase_units[0].amount.value,
                                              details.purchase_units[0].amount.breakdown.tax_total.value,
                                              details.purchase_units[0].amount.breakdown.shipping.value
                                            )
+                                           this.setState({ orderLink: '/order/' + orderId })
                                          },
-                                         (err) => console.log('backend place order error', err)
+                                         (err) => {
+                                           console.log('backend place order error', err)
+                                           this.setState({ paypalError: err.toString() })
+                                         }
                                        )
                                      }
                                    }}
@@ -372,6 +378,7 @@ class CheckoutPage extends React.Component {
                         </Mutation>
                         || <p>Fill out form to continue checkout</p>
                       }
+                      { this.state.orderLink && <Link href={this.state.orderLink}><Button variant="primary"><a>View Receipt</a></Button></Link> }
                       { this.state.paypalError && <p>Could not place order: {this.state.paypalError}</p>}
                     </div>
                   </Col>

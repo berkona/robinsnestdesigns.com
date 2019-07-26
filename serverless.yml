@@ -1,4 +1,4 @@
-service:                  robinsnestdesigns
+service:                       robinsnestdesigns
 
 plugins:
   - serverless-offline
@@ -7,86 +7,218 @@ plugins:
   - serverless-plugin-split-stacks
 
 custom:
-  stage:                  ${opt:stage, 'dev'}
-  config:                 ${file(config.${self:custom.stage}.yml)}
+  stage:                       ${opt:stage, 'dev'}
+  config:                      ${file(config.${self:custom.stage}.yml)}
   ncc:
-    cache:                false
+    cache:                     false
   splitStacks:
-    perFunction:          true
-    perType:              false
+    perFunction:               true
+    perType:                   false
   serverless-nextjs:
-    nextConfigDir:        ./www/
-    assetsBucketName:     public-static-build-assets-2f3e5d.robinsnestdesigns.com
-    createAssetBucket:    false
+    nextConfigDir:             ./www/
+    assetsBucketName:          public-static-build-assets-2f3e5d.robinsnestdesigns.com
+    createAssetBucket:         false
+    cloudFront:
+      Properties:
+        DistributionConfig:
+          Aliases:
+            - ${self:custom.config.hostname}
+          ViewerCertificate:
+            AcmCertificateArn: arn:aws:acm:us-east-1:740120686538:certificate/ad29d283-094c-4f13-a641-52b0e924a38b
+    routes:
+      - src:                   index
+        path:                  /
+        response:
+          headers:
+            Cache-Control:     "'max-age=300'"
+      - src:                   categories
+        path:                  categories
+        response:
+          headers:
+            Cache-Control:     "'max-age=300'"
+      - src:                   category
+        path:                  category/{categoryId}
+        request:
+          parameters:
+            paths:
+              categoryId:      true
+        response:
+          headers:
+            Cache-Control:     "'max-age=300'"
+      - src:                   order
+        path:                  order/{orderId}
+        request:
+          parameters:
+            paths:
+              orderId:         true
+        response:
+          headers:
+            Cache-Control:     "'max-age=300'"
+      - src:                   product
+        path:                  product/{productId}/{catSlug}/{cat2Slug}/{slug}
+        request:
+          parameters:
+            paths:
+              productId:       true
+        response:
+          headers:
+            Cache-Control:     "'max-age=300'"
+      - src:                   search
+        path:                  search/c/{categoryId}/sc/{subcategoryId}/p/{pageNo}
+        request:
+          parameters:
+            paths:
+              categoryId:      true
+              subcategoryId:   true
+              pageNo:          true
+        response:
+          headers:
+            Cache-Control:     "'max-age=300'"
+      - src:                   search
+        path:                  search/c/{categoryId}/sc/{subcategoryId}
+        request:
+          parameters:
+            paths:
+              categoryId:      true
+              subcategoryId:   true
+        response:
+          headers:
+            Cache-Control:     "'max-age=300'"
+      - src:                   search
+        path:                  search/c/{categoryId}/p/{pageNo}
+        request:
+          parameters:
+            paths:
+              categoryId:      true
+              pageNo:          true
+        response:
+          headers:
+            Cache-Control:     "'max-age=300'"
+      - src:                   search
+        path:                  search/c/{categoryId}
+        request:
+          parameters:
+            paths:
+              categoryId:      true
+        response:
+          headers:
+            Cache-Control:     "'max-age=300'"
+      - src:                   search
+        path:                  search/p/{pageNo}
+        request:
+          parameters:
+            paths:
+              pageNo:          true
+        response:
+          headers:
+            Cache-Control:     "'max-age=300'"
+      - src:                   search
+        path:                  search
+      - src:                   admin/product-details
+        path:                  admin/product-details/{productId}
+        request:
+          parameters:
+            paths:
+              productId:       true
+      - src:                   admin/category-details
+        path:                  admin/category-details/{categoryId}
+        request:
+          parameters:
+            paths:
+              categoryId:      true
 
 package:
-  individually:           true
-  excludeDevDependencies: false
+  individually:                true
+  excludeDevDependencies:      false
   exclude:
     - ./**
 
 provider:
-  name:                   aws
-  runtime:                nodejs10.x
-  region:                 us-east-1
-  stage:                  ${self:custom.stage}
-  memorySize:             1024
-  timeout:                30
+  name:                        aws
+  runtime:                     nodejs10.x
+  region:                      us-east-1
+  stage:                       ${self:custom.stage}
+  memorySize:                  1024
+  timeout:                     30
   environment:
-    SITE_URL:             ${self:custom.config.siteUrl}
-    API_URL:              ${self:custom.config.apiUrl}
-    SQL_ENGINE:           mssql
-    SQL_PORT:             1433
-    SQL_HOST:             ${ssm:rsmSQLHostPegwebProd}
-    SQL_USER:             ${ssm:rsmSQLUserPegwebProd}
-    SQL_PWD:              ${ssm:rsmSQLPasswordPegwebProd}
-    SQL_DB:               ${ssm:rsmSQLDatabasePegwebProd}
-    PAYPAL_CLIENTID:      ${ssm:rsmPayPalClientID-${self:custom.stage}}
-    PAYPAL_CLIENTSECRET:  ${ssm:rsmPayPalClientSecret-${self:custom.stage}}
-    PAYPAL_ENVIRONMENT:   ${ssm:rsmPayPalEnvironment-${self:custom.stage}}
-    JWT_SECRET:           ${ssm:rsmJWTSecret-${self:custom.stage}}
-    JWT_ISSUER:           Robin's Nest Designs
-    JWT_MAX_AGE:          14d
-    AWSAccessKeyId:       ${ssm:rsmAWSAccessKeyId}
-    AWSSecretKey:         ${ssm:rsmAWSAccessSecret}
-    AWSUploadBucket:      ${ssm:rsmAWSUploadBucket}
-    MAILGUN_API_KEY:      ${ssm:rsmMailgunApiKey}
-    ENGINE_API_KEY:       ${ssm:rsmApolloEngineApiKey}
+    SITE_URL:                  ${self:custom.config.siteUrl}
+    API_URL:                   ${self:custom.config.apiUrl}
+    SQL_ENGINE:                mssql
+    SQL_PORT:                  1433
+    SQL_HOST:                  ${ssm:rsmSQLHostPegwebProd}
+    SQL_USER:                  ${ssm:rsmSQLUserPegwebProd}
+    SQL_PWD:                   ${ssm:rsmSQLPasswordPegwebProd}
+    SQL_DB:                    ${ssm:rsmSQLDatabasePegwebProd}
+    PAYPAL_CLIENTID:           ${ssm:rsmPayPalClientID-${self:custom.stage}}
+    PAYPAL_CLIENTSECRET:       ${ssm:rsmPayPalClientSecret-${self:custom.stage}}
+    PAYPAL_ENVIRONMENT:        ${ssm:rsmPayPalEnvironment-${self:custom.stage}}
+    JWT_SECRET:                ${ssm:rsmJWTSecret-${self:custom.stage}}
+    JWT_ISSUER:                Robin's Nest Designs
+    JWT_MAX_AGE:               14d
+    AWSAccessKeyId:            ${ssm:rsmAWSAccessKeyId}
+    AWSSecretKey:              ${ssm:rsmAWSAccessSecret}
+    AWSUploadBucket:           ${ssm:rsmAWSUploadBucket}
+    MAILGUN_API_KEY:           ${ssm:rsmMailgunApiKey}
+    ENGINE_API_KEY:            ${ssm:rsmApolloEngineApiKey}
 
 functions:
   graphql:
-    handler:              api/graphql.lambda
+    handler:                   api/handlers/graphql.lambda
     events:
       - http:
-          path:           graphql
-          method:         post
+          path:                graphql
+          method:              post
       - http:
-          path:           graphql
-          method:         options
+          path:                graphql
+          method:              options
   playground:
-    handler:              api/playground.lambda
+    handler:                   api/handlers/playground.lambda
     events:
       - http:
-          path:           graphql
-          method:         get
+          path:                graphql
+          method:              get
   sitemap:
-    handler:              api/sitemap.lambda
+    handler:                   api/handlers/sitemap.lambda
     events:
       - http:
-          path:           sitemap
-          method:         get
+          path:                sitemap.xml
+          method:              get
   redirect:
-    handler:              api/redirect.lambda
+    handler:                   api/handlers/redirect.lambda
     events:
       - http:
-          path:           redirect/{proxy+}
-          method:         get
+          path:                /whats_new.cfm
+          method:              get
+      - http:
+          path:                /add_to_cart.cfm
+          method:              get
+      - http:
+          path:                /wish_list.cfm
+          method:              get
+      - http:
+          path:                /Newsletters/newsletter-signup.cfm
+          method:              get
+      - http:
+          path:                /search.cfm
+          method:              get
+      - http:
+          path:                /category_results.cfm
+          method:              get
+      - http:
+          path:                /results.cfm
+          method:              get
+      - http:
+          path:                /Results.cfm
+          method:              get
+      - http:
+          path:                /detail.cfm
+          method:              get
   prewarm-index:
-    handler:              api/handlers/prewarmer.lambda
+    handler:                   api/handlers/prewarmer.lambda
     environment:
-      PAGE_URL:           ${self:custom.config.siteUrl}
+      PAGE_URL:                ${self:custom.config.siteUrl}
     events:
       - schedule:
-          name:           prewarm-index-schedule-${self:custom.stage}
-          rate:           rate(30 minutes)
-          enabled:        true
+          name:                prewarm-index-schedule-${self:custom.stage}
+          rate:                rate(30 minutes)
+          enabled:             true

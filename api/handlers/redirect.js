@@ -1,7 +1,27 @@
 const url = require('url')
-const knex = require('./knex')
+const knex = require('../knex')
 
 const redirectUrls = [
+  {
+    src: /\/whats_new\.cfm/,
+    dest: () => "/search?onSaleOnly=true&sortOrder=mostRecent"
+  },
+  {
+    src: /\/add_to_cart\.cfm/,
+    dest: () => "/cart"
+  },
+  {
+    src: /\/wish_list\.cfm/,
+    dest: () => "/wishlist"
+  },
+  {
+    src: /\/Newsletters\/newsletter-signup\.cfm/,
+    dest: () => "/subscribe"
+  },
+  {
+    src: /\/search\.cfm/,
+    dest: () => "/categories"
+  },
   {
     src: /category_results\.cfm\?Category=(\d+)/,
     dest: (_, categoryId) => `/search/c/${categoryId}`,
@@ -33,7 +53,7 @@ const redirectUrls = [
 ]
 
 const handler = async (req, res) => {
-  const requestPath = req.params.requestPath || ""
+  const requestPath = req.params.requestPath || req.url || ""
   const queryStr = url.parse(req.url).href.split('?')[1] || ""
   const requestUrl = requestPath + (queryStr ? ('?' + queryStr) : '')
   console.log('redirecting', requestUrl)

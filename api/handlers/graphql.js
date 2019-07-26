@@ -1,5 +1,5 @@
-const { ApolloServer } = require('./apollo-server')
-const schema = require('./schema')
+const { ApolloServer } = require('../apollo-server')
+const schema = require('../schema')
 
 // TODO: better detection here
 const isDev = process.env.NODE_ENV != "production"

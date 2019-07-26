@@ -1,2 +1,3 @@
-siteUrl: https://www.robinsnestdesigns.com/
-apiUrl:  https://ylovt93etb.execute-api.us-east-1.amazonaws.com/prod/graphql
+hostname: www.robinsnestdesigns.com
+siteUrl:  https://www.robinsnestdesigns.com/
+apiUrl:   https://www.robinsnestdesigns.com/graphql

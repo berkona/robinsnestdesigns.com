@@ -4,8 +4,10 @@ const fs = require('fs')
 const url = require('url')
 const sitemap = require('sitemap')
 const slugify = require('slugify')
-const { knex, readDB } = require('./db/db')
-const listProductsCategories = require('./db/Product/listProductsCategories')
+const { knex, readDB } = require('../db/db')
+const listProductsCategories = require('../db/Product/listProductsCategories')
+
+const SITE_MAP_CACHE_TIME = 1000 * 60 * 60 * 24
 
 const ProductLinkStr = (props) => (
   `/product/${props.productId}/${slugify('' + props.category)}/${slugify('' + props.subcategory)}/${slugify('' + props.title)}?listref=${props.listName}`
@@ -150,13 +152,12 @@ const addSearchUrls = async(urls) => {
 const handler = async (hostname) => {
   if (!hostname) throw new Error("Set SITE_URL before continuing")
 
-  const cacheTime = 1000 * 60 * 60 * 24
   //const db = new MyDB()
   //await db.initialize({ context: {} })
 
   const urls = sitemap.createSitemap({
     hostname,
-    cacheTime,
+    cacheTime: SITE_MAP_CACHE_TIME,
   })
 
   urls.add(makeUrlObj('/categories'))
@@ -184,6 +185,7 @@ app.get('/sitemap', async (req, res) => {
     console.log('sitemap.length', sitemap.length, 'gzipped.length', gzipped.length)
     res.setHeader('content-type', 'application/xml')
     res.setHeader('content-encoding', 'gzip' )
+    res.setHeader('Cache-Control', 'public,max-age=' + SITE_MAP_CACHE_TIME)
     res.send( gzipped )
   } catch(err) {
     console.error(err)

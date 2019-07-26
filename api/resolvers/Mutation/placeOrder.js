@@ -53,7 +53,13 @@ module.exports = async (obj, { orderId, paypalOrderId, shipping, county, promo }
   }
 
   // get paypal order details
-  const paypalOrder = await getPaypalOrder(paypalOrderId)
+  let paypalOrder = null
+  try {
+    paypalOrder = await getPaypalOrder(paypalOrderId)
+  } catch (err) {
+    console.error('placeOrder', 'Could not get paypal order', err)
+    throw err
+  }
 
   if (order.total != paypalOrder.amount) {
     throw new Error('paypalOrder does not match order amount -- refund paypal order');
@@ -161,24 +167,27 @@ module.exports = async (obj, { orderId, paypalOrderId, shipping, county, promo }
 
   // send email to admin & user
   const orderLink = process.env.SITE_URL + 'order/' + orderId
+  try {
+    await sendEmail({
+      from: "Robin's Nest Designs <postmaster@mg.robinsnestdesigns.com>",
+      to: "robin@robinsnestdesigns.com",
+      subject: "Order Placed",
+      text: 'A new order has been placed.  See: ' + orderLink,
+    })
 
-  await sendEmail({
-    from: "Robin's Nest Designs <postmaster@mg.robinsnestdesigns.com>",
-    to: "robin@robinsnestdesigns.com",
-    subject: "Order Placed",
-    text: 'A new order has been placed.  See: ' + orderLink,
-  })
-
-  await sendEmail({
-    from: "Robin's Nest Designs <postmaster@mg.robinsnestdesigns.com>",
-    to: email_address,
-    subject: "Your Order with Robin's Nest Designs",
-    template: "order-placed",
-    'v:customerFirstName':  (name && name.given_name) || sFirstName,
-    'v:orderNo': orderId,
-    'v:orderDate': new Date().toLocaleDateString(),
-    'v:orderLink': orderLink,
-  })
+    await sendEmail({
+      from: "Robin's Nest Designs <postmaster@mg.robinsnestdesigns.com>",
+      to: email_address,
+      subject: "Your Order with Robin's Nest Designs",
+      template: "order-placed",
+      'v:customerFirstName':  (name && name.given_name) || sFirstName,
+      'v:orderNo': orderId,
+      'v:orderDate': new Date().toLocaleDateString(),
+      'v:orderLink': orderLink,
+    })
+  } catch (err) {
+    console.log('placeOrder', 'Could not send post-order emails', err)
+  }
 
   return order
 }
