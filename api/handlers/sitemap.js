@@ -4,7 +4,7 @@ const fs = require('fs')
 const url = require('url')
 const sitemap = require('sitemap')
 const slugify = require('slugify')
-const { knex, readDB } = require('../db/db')
+const { withDB, readDB } = require('../db')
 const listProductsCategories = require('../db/Product/listProductsCategories')
 
 const SITE_MAP_CACHE_TIME = 1000 * 60 * 60 * 24
@@ -175,9 +175,8 @@ const handler = async (hostname) => {
 }
 
 const app = require('express')()
-app.get('*', async (req, res) => {
+app.get('*', (req, res) => withDB(async () => {
   try {
-    await knex.initialize()
     const hostname = process.env.SITE_URL
     if (!hostname) throw new Error('set SITE_URL in env')
     const sitemap = await timeAsyncFn(() => handler(hostname), 'handler')
@@ -191,10 +190,8 @@ app.get('*', async (req, res) => {
     console.error(err)
     res.status(500)
     res.send("Internal server error")
-  } finally {
-    await knex.destroy()
   }
-})
+}))
 
 const serverless = require('serverless-http')
 

@@ -3,7 +3,7 @@ const getCategoryImage = require('../db/Category/getCategoryImage')
 const updateCategory = require('../db/Category/updateCategory')
 
 module.exports = {
-  image: (obj, args, context) => getImage(
+  image: (obj, args, context) => obj && obj.image || getImage(
     () =>  getCategoryImage(obj.id),
     (image) => updateCategory(obj.id, { image, }),
     {

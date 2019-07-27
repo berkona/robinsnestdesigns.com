@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
 
-source ../.env
+# Usage: ./port-db.sh $source_endpoint_arn $target_endpoint_arn $env_file
+# env file is for DB credentials to update DB after port
 
 source_endpoint_arn="$1"
 target_endpoint_arn="$2"
+env_file="$3"
+
+source $env_file
 
 echo "Creating replication instance"
 

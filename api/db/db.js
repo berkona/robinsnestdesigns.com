@@ -16,16 +16,41 @@ const cache = new NamespacedCache({
   maxAge: CACHE_MAX_AGE,
 })
 
-const runQuery = async (query) => {
+let knexNeedsInitialize = false
+
+const withDB = async (asyncFn) => {
+  try {
+    return await asyncFn()
+  } finally {
+    await finalize()
+  }
+}
+
+const finalize = async () => {
+  knexNeedsInitialize = true
+  // TODO: sweep for zombies
+  await knex.destroy()
+}
+
+const runQueryWithRetry = async (query) => {
   return await retry(async bail => {
     // TODO: bail logic
-    return await query
+    // TODO: attempt to free connections if we hit a Too Many Connections issues
+    return await runQuery(query)
   }, {
     retries: QUERY_RETRIES,
     factor: QUERY_DELAY_FACTOR,
     minTimeout: QUERY_DELAY_MIN,
     randomize: true,
   })
+}
+
+const runQuery = async (query) => {
+  if (knexNeedsInitialize) {
+    knexNeedsInitialize = false
+    await knex.initialize()
+  }
+  return await query
 }
 
 let nTotal = 0
@@ -45,7 +70,7 @@ const readDB = async (query, namespace) => {
       nMisses,
       missRate: (nMisses / nTotal) * 100,
     })
-    queryPromise = runQuery(query)
+    queryPromise = runQueryWithRetry(query)
     cache.set(key, queryPromise, namespace)
   }
   return await Promise.resolve(queryPromise)
@@ -56,11 +81,14 @@ const writeDB = async (query, namespace) => {
   cache.invalidate(namespace)
   // TODO: the current awaiters of promises in namespaces will prolly still see old data
   // TODO retry updates/inserts?
-  return await query
+  return await runQuery(query)
 }
 
 module.exports = {
   knex,
   readDB,
   writeDB,
+  withDB,
+  finalize,
+  runQuery,
 }
