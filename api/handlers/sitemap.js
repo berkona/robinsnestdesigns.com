@@ -175,7 +175,7 @@ const handler = async (hostname) => {
 }
 
 const app = require('express')()
-app.get('/sitemap', async (req, res) => {
+app.get('*', async (req, res) => {
   try {
     await knex.initialize()
     const hostname = process.env.SITE_URL
