@@ -72,7 +72,7 @@ const handler = async (req, res) => {
 }
 
 const app = require('express')()
-app.get('/redirect/:requestPath', handler)
+app.get('*', handler)
 const serverless = require('serverless-http')
 module.exports = {}
 module.exports.lambda = serverless(app)
