@@ -23,6 +23,11 @@ export default (props) => (
         ? <meta name="keywords" content={ props.keywords } />
         : undefined
       }
+      {
+        props.canonical
+        ? <link rel="canonical" href={props.canonical} />
+        : undefined
+      }
     </Head>
     <h1 style={{ display: 'none' }}>{props.title}</h1>
   </>

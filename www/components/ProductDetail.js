@@ -15,6 +15,7 @@ import PriceDisplay from './PriceDisplay'
 import { Product, ProductDetailAction } from '../lib/next-ga-ec'
 import ProductImage from './ProductImage'
 import Head from 'next/head'
+import { ProductLinkStr } from './Links'
 
 export const pageQuery = gql`
 query($id: ID!) {
@@ -111,6 +112,7 @@ const ProductDetail = (props) => (
         title={data.product.name + ' | ' + data.product.category + ' | ' + data.product.subcategory}
         description={'Check out ' + data.product.name + ' and more exclusive items at Robin\'s Nest Designs now. ' + data.product.description}
         keywords={MakeSEOKeywords(data.product)}
+        canonical={ProductLinkStr({ productId: data.product.id, category: data.product.category, subcategory: data.product.subcategory, title: data.product.name, listName: 'sitemap' })}
       />
       <Row>
         <Col>
