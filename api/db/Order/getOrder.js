@@ -17,6 +17,7 @@ module.exports = async function getOrder(orderId, shipping, county, coupon_code)
     order.tax = cInfo.SalesTax
     order.shipping = cInfo.Shipping
     order.total = cInfo.Total
+    order.discount = cInfo.Discount
     order.customerInfo = cInfo
   }
   return order
