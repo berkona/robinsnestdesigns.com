@@ -12,6 +12,7 @@ import { Impression } from '../lib/next-ga-ec'
 import { ProductLink} from '../components/Links'
 import ProductImage from '../components/ProductImage'
 import HomePageCarousel from '../components/HomePageCarousel'
+import SetCacheControl from '../lib/set-cache-control'
 
 const FIND_ONE_PRODUCT = gql`
 query($categoryId: ID, $onSaleOnly: Boolean, $newOnly: Boolean) {
@@ -176,5 +177,7 @@ const Index = (props) => (
     </ContentWithSidebar>
   </>
 )
+
+Index.getInitialProps = SetCacheControl(600)
 
 export default Index

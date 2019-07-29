@@ -13,6 +13,7 @@ import { PRODUCT_GET_PAGE } from '../constants/queries'
 import Button from 'react-bootstrap/Button'
 import { FaTimes, FaPlus } from 'react-icons/fa'
 import { SearchLink } from '../components/Links'
+import SetCacheControl from '../lib/set-cache-control'
 
 export const seoQuery = gql`
 query($categoryId: ID!) {
@@ -251,6 +252,8 @@ class SearchPage extends React.Component {
       </>
   }
 }
+
+SearchPage.getInitialProps = SetCacheControl(600)
 
 SearchPage = withRouter(SearchPage)
 

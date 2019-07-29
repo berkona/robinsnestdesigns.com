@@ -3,6 +3,7 @@ import MailchimpSubscribe from "react-mailchimp-subscribe"
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import ContentWithSidebar from '../components/ContentWithSidebar'
+import SetCacheControl from '../lib/set-cache-control'
 
 const mailchimpUrl = "https://robinsnestdesigns.us10.list-manage.com/subscribe/post?u=a40afd248779cabb18bc9e150&amp;id=ee8f35f684"
 
@@ -50,7 +51,7 @@ const CustomForm = ({ status, message, onValidated }) => {
   );
 };
 
-export default (props) => (
+const SubscribePage = (props) => (
     <ContentWithSidebar>
       <div style={{ padding: '16px' }}>
         <h1>Subscribe to the Newletter</h1>
@@ -72,3 +73,7 @@ export default (props) => (
       </div>
     </ContentWithSidebar>
 )
+
+SubscribePage.getInitialProps = SetCacheControl(60 * 60 * 24 * 14)
+
+export default SubscribePage

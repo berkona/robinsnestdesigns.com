@@ -11,6 +11,7 @@ import gql from 'graphql-tag'
 import Button from 'react-bootstrap/Button'
 import SEO from '../components/SEO'
 import ApolloError from '../components/ApolloError'
+import SetCacheControl from '../lib/set-cache-control'
 
 const CATEGORY_GET = gql`
 query($categoryId: ID!) {
@@ -35,7 +36,7 @@ query($categoryId: ID!) {
 }
 `
 
-export default withRouter(({ router }) => <ContentWithSidebar>
+const Category = withRouter(({ router }) => <ContentWithSidebar>
   <Query query={CATEGORY_GET} variables={{ categoryId: router.query.categoryId }}>
     {({ loading, error, data }) => loading ? <Loader />
       : error ? <ApolloError error={error} />
@@ -81,3 +82,7 @@ export default withRouter(({ router }) => <ContentWithSidebar>
     }
   </Query>
 </ContentWithSidebar>)
+
+Category.getInitialProps = SetCacheControl(600)
+
+export default Category

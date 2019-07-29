@@ -7,6 +7,7 @@ import Table from 'react-bootstrap/Table'
 import { withRouter } from 'next/router'
 import Loader from '../components/Loader'
 import Link from 'next/link'
+import SetCacheControl from '../lib/set-cache-control'
 
 const query = gql`
   query($orderId: ID!) {
@@ -133,5 +134,7 @@ const OrderPage = withRouter(
   }}
   </Query></div></Col>
 )
+
+OrderPage.getInitialProps = SetCacheControl(600)
 
 export default OrderPage

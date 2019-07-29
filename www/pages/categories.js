@@ -10,6 +10,7 @@ import Button from 'react-bootstrap/Button'
 import SEO from '../components/SEO'
 import Loader from '../components/Loader'
 import ApolloError from '../components/ApolloError'
+import SetCacheControl from '../lib/set-cache-control'
 
 const CATEGORY_GET = gql`
 query {
@@ -24,7 +25,7 @@ query {
 }
 `
 
-export default () => <ContentWithSidebar>
+const Categories = () => <ContentWithSidebar>
   <SEO title="Browse All Categories" description="Browse all the categories at Robin's Nest Designs" />
   <div className="clearfix" style={{ marginTop: '10px' }}>
     <div className="float-left">
@@ -48,3 +49,6 @@ export default () => <ContentWithSidebar>
     }
   </Query>
 </ContentWithSidebar>
+
+Categories.getInitialProps = SetCacheControl(600)
+export default Categories

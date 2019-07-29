@@ -32,7 +32,7 @@ class MyApp extends App {
     let { Component, ctx } = args
     let _innerProps = {}
     if (Component.getInitialProps) {
-      _innerProps = await Component.getInitialProps(args)
+      _innerProps = await Component.getInitialProps(ctx)
     }
     return {
       cookies: Cookies.get(ctx),

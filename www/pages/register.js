@@ -7,6 +7,7 @@ import { Mutation } from 'react-apollo'
 import Router from 'next/router'
 import { FaSpinner } from 'react-icons/fa'
 import { CurrentUserContext } from '../lib/auth'
+import SetCacheControl from '../lib/set-cache-control'
 
 const REGISTER = gql`
 mutation register($email: String!, $password: String!) {
@@ -16,7 +17,7 @@ mutation register($email: String!, $password: String!) {
 }
 `
 
-const signin = (props) =>
+const RegisterPage = (props) =>
   <CurrentUserContext.Consumer>
     {currentUser => {
       if (currentUser.isLoggedIn()) {
@@ -73,4 +74,6 @@ const signin = (props) =>
     }}
   </CurrentUserContext.Consumer>
 
-export default signin
+RegisterPage.setInitialProps = SetCacheControl(60 * 60 * 24 * 14)
+
+export default RegisterPage

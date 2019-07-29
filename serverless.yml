@@ -149,7 +149,7 @@ provider:
   region:                      us-east-1
   stage:                       ${self:custom.stage}
   memorySize:                  1024
-  timeout:                     120
+  timeout:                     30
   environment:
     SITE_URL:                  ${self:custom.config.siteUrl}
     API_URL:                   ${self:custom.config.apiUrl}
