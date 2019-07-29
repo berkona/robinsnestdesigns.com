@@ -18,6 +18,12 @@ custom:
   alerts:
     stages:
       - prod
+    alarms:
+      alarms:
+      - functionThrottles
+      - functionErrors
+      - functionInvocations
+      - functionDuration
   serverless-nextjs:
     nextConfigDir:             ./www/
     assetsBucketName:          public-static-build-assets-2f3e5d.robinsnestdesigns.com
@@ -143,7 +149,7 @@ provider:
   region:                      us-east-1
   stage:                       ${self:custom.stage}
   memorySize:                  1024
-  timeout:                     30
+  timeout:                     120
   environment:
     SITE_URL:                  ${self:custom.config.siteUrl}
     API_URL:                   ${self:custom.config.apiUrl}
