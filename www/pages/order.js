@@ -29,6 +29,7 @@ const query = gql`
       }
       subtotal
       tax
+      discount
       shipping
       total
       items {
@@ -110,6 +111,13 @@ const OrderPage = withRouter(
      <td colSpan="4" align="right" style={{borderTop: "#CCCCCC solid 1px"}}><strong>Shipping:</strong></td>
      <td style={{borderTop: "#CCCCCC solid 1px"}} align="right"><strong>${data.cart.shipping.toFixed(2)}</strong></td>
    </tr>
+   {
+     data.cart.discount > 0 &&
+     <tr>
+          <td colSpan="4" align="right" style={{borderTop: "#CCCCCC solid 1px"}}><strong>Discount:</strong></td>
+          <td style={{borderTop: "#CCCCCC solid 1px"}} align="right"><strong>${data.cart.discount.toFixed(2)}</strong></td>
+      </tr>
+   }
    <tr>
       <td colSpan="4" align="right" style={{borderTop: "#CCCCCC solid 1px"}}><strong>Tax:</strong></td>
       <td style={{borderTop: "#CCCCCC solid 1px"}} align="right"><strong>${data.cart.tax.toFixed(2)}</strong></td>
