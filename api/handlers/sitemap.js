@@ -4,7 +4,7 @@ const fs = require('fs')
 const url = require('url')
 const sitemap = require('sitemap')
 const slugify = require('slugify')
-const { withDB, readDB } = require('../db')
+const { knex, withDB, readDB } = require('../db')
 const listProductsCategories = require('../db/Product/listProductsCategories')
 
 const SITE_MAP_CACHE_TIME = 1000 * 60 * 60 * 24
