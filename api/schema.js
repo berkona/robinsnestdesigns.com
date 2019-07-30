@@ -27,6 +27,7 @@ const typeDefs = gql`
     siteinfo: SiteInfo!
     similarKeywords(keyword: String!): [String!]!
     relatedProducts(productId: ID!): [Product!]!
+    topSellingProducts(limit: Int): [Product!]!
   }
 
   type SiteInfo {

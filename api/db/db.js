@@ -36,7 +36,12 @@ const runQueryWithRetry = async (query) => {
   return await retry(async bail => {
     // TODO: bail logic
     // TODO: attempt to free connections if we hit a Too Many Connections issues
-    return await runQuery(query)
+    try {
+      return await runQuery(query)
+    } catch (err) {
+      console.error('runQueryWithRetry', 'error', err)
+      throw err
+    }
   }, {
     retries: QUERY_RETRIES,
     factor: QUERY_DELAY_FACTOR,

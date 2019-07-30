@@ -126,7 +126,9 @@ const ProductDetail = (props) => (
         <Col xs={12} md={7}>
           <div style={{  padding: '0px 24px' }}>
             <div className="product-large-image">
-              <ProductImage product={data.product} />
+              <a target="_blank" href={data.product.hyperlinkedImage}>
+                <ProductImage product={data.product} />
+              </a>
               <Head>
                 <meta name="og:image" content={data.product.hyperlinkedImage || (data.product.image && `https://www.robinsnestdesigns.com/ahpimages/${data.product.image}`) || (data.product.thumbnail && `https://www.robinsnestdesigns.com/ahpimages/${data.product.thumbnail}`)} />
               </Head>
@@ -148,7 +150,7 @@ const ProductDetail = (props) => (
             <AddToWishList productId={data.product.id} />
             </div>
             <hr style={{ color: '#888' }} />
-            <SocialDrawer url={new URL(ProductLinkStr({ productId: data.product.id, category: data.product.category, subcategory: data.product.subcategory, title: data.product.name, listName: 'share' }), BASE_URL).toString()}/>
+            <SocialDrawer imageUrl={data.product.hyperlinkedImage} url={new URL(ProductLinkStr({ productId: data.product.id, category: data.product.category, subcategory: data.product.subcategory, title: data.product.name, listName: 'share' }), BASE_URL).toString()}/>
             <hr style={{ color: '#888' }} />
             <h2>Shipping</h2>
             <p>{shippingTime}</p>
@@ -171,7 +173,7 @@ const ProductDetail = (props) => (
             <ProductList isTeaser={true} limit={8} categoryId={data.product.categoryId} subcategoryId={data.product.subcategoryId} sortOrder="random" listName={'ProductDetail - Related Items'}/>
             <hr style={{ color: '#888' }} />
             <h1>Customers Also Bought</h1>
-            <RelatedProducts productId={props.productId} />
+            <RelatedProducts productId={props.productId} listName={'Product Detail - Customers Also Bought'} />
           </div>
         </Col>
       </Row>

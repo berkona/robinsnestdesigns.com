@@ -13,6 +13,7 @@ import { ProductLink} from '../components/Links'
 import ProductImage from '../components/ProductImage'
 import HomePageCarousel from '../components/HomePageCarousel'
 import SetCacheControl from '../lib/set-cache-control'
+import TopSellingProducts from '../components/TopSellingProducts'
 
 const FIND_ONE_PRODUCT = gql`
 query($categoryId: ID, $onSaleOnly: Boolean, $newOnly: Boolean) {
@@ -145,6 +146,14 @@ const Index = (props) => (
           </Col>
 
           <Col xs={12}>
+            <h2>Popular Items This Month</h2>
+            <p className="intro">These items are flying off the shelves, so order fast before we run out of stock.</p>
+            <hr />
+            <TopSellingProducts listName={'Index - Popular Items This Month'} limit={8} />
+            <hr />
+          </Col>
+          
+          <Col xs={12}>
             <h2>On Sale</h2>
             <p className="intro">
               Check out our great sales going on every day
@@ -172,6 +181,7 @@ const Index = (props) => (
             <ProductListTeaser sortOrder="random" categoryId={215} limit={8} listName={'Index - New in Bargin Bin'} />
             <hr />
           </Col>
+
         </Row>
       </div>
     </ContentWithSidebar>

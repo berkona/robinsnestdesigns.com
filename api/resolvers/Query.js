@@ -11,6 +11,7 @@ const getProduct = require('../db/Product/getProduct')
 const getWishList = require('../db/WishList/getWishList')
 const listPromos = require('../db/Promotions/listPromos')
 const relatedProducts = require('../db/Product/relatedProducts')
+const topSellingProducts = require('../db/Product/topSellingProducts')
 
 const reduceProduct = require('../reducers/reduceProduct')
 const reduceWishList = require('../reducers/reduceWishList')
@@ -50,5 +51,6 @@ module.exports = {
     throw new Error('Not implemented')
   },
   relatedProducts: async (obj, { productId }, context) => await relatedProducts(productId),
+  topSellingProducts: async (obj, { limit }, context) => await topSellingProducts(null, limit),
   // isInWishlist: (obj, { token, productId }, context) => context.dataSources.db.isInWishlist(verifyAuthToken(token).uid, productId),
 }
