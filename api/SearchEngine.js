@@ -151,60 +151,66 @@ class SearchEngine {
     }
   }
 
-  // lazy init all the stuff we need here
+  /*
+   Asynchronously initialize the search engine, creating needed tables + indices.
+   All operations automatically await init() first, but this behaviour is exposed if you need to await init() for some reason
+   Awaiting init() multiple times has no effect, but is useful to block until search engine is ready to accept queries
+   Returns: Promise<void>
+   */
   async init() {
-    if (this.isInitialized) {
-      return await this.initPromise
+    if (!this.initPromise) {
+      this.initPromise = this.initPromise = (async () => {
+        // yes, this IS a race condition... PRs welcome
+        const isTableCreated = await this.knex.schema.hasTable(this.keywordTableName)
+        if (!isTableCreated) {
+          await this.knex.schema.createTable(this.keywordTableName, table => {
+            table.string('keyword').notNullable()
+            table.integer('record').unsigned().notNullable()
+            table.primary(['keyword', 'record'])
+          })
+        } else {
+          const hasKeywordColumn = await this.knex.schema.hasColumn(this.keywordTableName, 'keyword')
+          const hasRecordColumn = await this.knex.schema.hasColumn(this.keywordTableName, 'record')
+          // TODO: check if primary key is correct here
+          if (!hasKeywordColumn || !hasRecordColumn) {
+            await this.knex.schema.table(table => {
+              if (!hasKeywordColumn)
+                table.string('keyword').notNullable()
+              if (!hasRecordColumn)
+                table.integer('record').unsigned().notNullable()
+            })
+          }
+        }
+
+        // traverse searchFields and ensure all columns are setup for calculating relevance score
+        const requiredColumns = []
+
+        await Promise.all(this.searchFields.map(async searchField => {
+          const columnName = matchColumnName(searchField.fieldName)
+          const hasColumn = await this.knex.schema.hasColumn(this.keywordTableName, columnName)
+          if (!hasColumn) {
+            requiredColumns.push(columnName)
+          }
+        }))
+
+        if (requiredColumns.length > 0) {
+          await this.knex.schema.alterTable(this.keywordTableName, table => {
+            requiredColumns.forEach(columnName => {
+              table.integer(columnName).notNullable().defaultTo(0)
+            })
+          })
+        }
+      })()
     }
-
-    this.isInitialized = true
-    this.initPromise = (async () => {
-      // yes, this IS a race condition... PRs welcome
-      const isTableCreated = await this.knex.schema.hasTable(this.keywordTableName)
-      if (!isTableCreated) {
-        await this.knex.schema.createTable(this.keywordTableName, table => {
-          table.string('keyword').notNullable()
-          table.integer('record').unsigned().notNullable()
-          table.primary(['keyword', 'record'])
-        })
-      } else {
-        const hasKeywordColumn = await this.knex.schema.hasColumn(this.keywordTableName, 'keyword')
-        const hasRecordColumn = await this.knex.schema.hasColumn(this.keywordTableName, 'record')
-        // TODO: check if primary key is correct here
-        if (!hasKeywordColumn || !hasRecordColumn) {
-          await this.knex.schema.table(table => {
-            if (!hasKeywordColumn)
-              table.string('keyword').notNullable()
-            if (!hasRecordColumn)
-              table.integer('record').unsigned().notNullable()
-          })
-        }
-      }
-
-      // traverse searchFields and ensure all columns are setup for calculating relevance score
-      const requiredColumns = []
-
-      await Promise.all(this.searchFields.map(async searchField => {
-        const columnName = matchColumnName(searchField.fieldName)
-        const hasColumn = await this.knex.schema.hasColumn(this.keywordTableName, columnName)
-        if (!hasColumn) {
-          requiredColumns.push(columnName)
-        }
-      }))
-
-      if (requiredColumns.length > 0) {
-        await this.knex.schema.alterTable(this.keywordTableName, table => {
-          requiredColumns.forEach(columnName => {
-            table.integer(columnName).notNullable().defaultTo(0)
-          })
-        })
-      }
-    })()
     await this.initPromise
   }
 
   /**
-   * Insert a record into the search engine database
+   Insert a record into the search engine database
+   Params:
+   - record: Object! See search engine config for how record is processed
+   - txn: Transaction The current transaction in progress (optional, new one is created)
+   Returns: Promise<void>
    */
   async add(record, txn) {
     record = validateObject(record, [ this.idFieldName ])
@@ -245,6 +251,12 @@ class SearchEngine {
     }
   }
 
+  /*
+  Determine if a record is contained in the index
+  Params:
+  - recordId: ID! corresponds to the record[config.idFieldName] of each added record
+  Returns: Promise<Boolean> whether the search index contains the recordId provided
+  */
   async has(recordId) {
     recordId = validateId(recordId)
     await this.init()
@@ -253,7 +265,11 @@ class SearchEngine {
   }
 
   /**
-   * Remove a record from the search engine database
+   Remove a record from the search engine database
+   Params:
+   - recordId: ID! corresponds to the record[config.idFieldName] of added record
+   - txn: Transaction The current transaction in progress (optional, new one is created)
+   Returns: Promise<void>
    */
   async remove(recordId, txn) {
     recordId = validateId(recordId)
@@ -263,7 +279,10 @@ class SearchEngine {
   }
 
   /**
-   * Re-calculate the matches for every record in the index
+   Re-calculate the matches for every record in the index
+   Params:
+   - fetchFn: function(recordID: ID!) => Promise<Object>
+   Returns: Promise<void>
    */
   async rebuild(fetchFn) {
     if (!fetchFn || typeof fetchFn != 'function')
@@ -284,8 +303,14 @@ class SearchEngine {
   }
 
   /**
-   * Returns a query which returns a table of (id, relevance) based on relevance of record to searchPhrase
-   * Only call this after you've await'd init() or some other function (they all await init first)
+   Returns a query which returns a table of (id, relevance) based on relevance of record to searchPhrase
+   Only await queries created by this function this after you've await'd init() or some other function (they all await init first)
+
+   Note: this method is not async and does not await init()
+
+   Params:
+   - searchPhrase: String! the raw string search phrase (not tokenized)
+   Returns: KnexQuery query that resolves to (recordID, relevance).  Doesn't use any result modification so you can use this in any way a knex query can be used.
    */
   search(searchPhrase) {
     if (!searchPhrase || !(typeof searchPhrase == "string")) {
@@ -323,11 +348,23 @@ class SearchEngine {
       .groupBy('record')
   }
 
+  /**
+  Get the current vocubulary (in lemma form) of the search engine index.
+  Useful for spell-checking and other NLP processes.
+  Params: None
+  Returns: Promise<[String]>
+  */
   async getAllKeywords() {
     await this.init()
     return await this.knex.select('keyword').distinct().from(this.keywordTableName).pluck('keyword')
   }
 
+  /**
+  Determine if the vocubulary contains the given keyword
+  Params:
+  - keyword: String! a non-empty string
+  Returns: Promise<Boolean> whether the keyword in contained in the search engine index.
+  */
   async hasKeyword(keyword) {
     if(!isValidKeyword(keyword))
       throw new Error('invalid keyword')
