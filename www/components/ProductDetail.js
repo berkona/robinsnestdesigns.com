@@ -16,6 +16,9 @@ import { Product, ProductDetailAction } from '../lib/next-ga-ec'
 import ProductImage from './ProductImage'
 import Head from 'next/head'
 import { ProductLinkStr } from './Links'
+import RelatedProducts from './RelatedProducts'
+import SocialDrawer from './SocialDrawer'
+import { BASE_URL }from '../constants/config'
 
 export const pageQuery = gql`
 query($id: ID!) {
@@ -132,7 +135,10 @@ const ProductDetail = (props) => (
         </Col>
         <Col xs={12} md={5}>
           <div style={{  padding: '0px 24px' }}>
-            <h3 className="product-title">{data.product.name} <span style={{ fontColor: '#888', fontSize: '14px' }}>(SKU: {data.product.sku})</span></h3>
+            <h3 className="product-title">{data.product.name}</h3>
+            <h3 className="product-title">
+              <span style={{ fontColor: '#888', fontSize: '14px' }}>(SKU: {data.product.sku})</span>
+            </h3>
             <div style={{ margin: '.5em 0' }}>
               <PriceDisplay product={data.product} isOnSale={isOnSale} />
             </div>
@@ -141,7 +147,8 @@ const ProductDetail = (props) => (
             <div style={{ marginTop: '10px' }}>
             <AddToWishList productId={data.product.id} />
             </div>
-
+            <hr style={{ color: '#888' }} />
+            <SocialDrawer url={new URL(ProductLinkStr({ productId: data.product.id, category: data.product.category, subcategory: data.product.subcategory, title: data.product.name, listName: 'share' }), BASE_URL).toString()}/>
             <hr style={{ color: '#888' }} />
             <h2>Shipping</h2>
             <p>{shippingTime}</p>
@@ -162,6 +169,9 @@ const ProductDetail = (props) => (
             <hr style={{ color: '#888' }} />
             <h1>Related Items</h1>
             <ProductList isTeaser={true} limit={8} categoryId={data.product.categoryId} subcategoryId={data.product.subcategoryId} sortOrder="random" listName={'ProductDetail - Related Items'}/>
+            <hr style={{ color: '#888' }} />
+            <h1>Customers Also Bought</h1>
+            <RelatedProducts productId={props.productId} />
           </div>
         </Col>
       </Row>

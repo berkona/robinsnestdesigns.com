@@ -10,6 +10,7 @@ const listSubcategories = require('../db/Subcategory/listSubcategories')
 const getProduct = require('../db/Product/getProduct')
 const getWishList = require('../db/WishList/getWishList')
 const listPromos = require('../db/Promotions/listPromos')
+const relatedProducts = require('../db/Product/relatedProducts')
 
 const reduceProduct = require('../reducers/reduceProduct')
 const reduceWishList = require('../reducers/reduceWishList')
@@ -48,5 +49,6 @@ module.exports = {
   similarKeywords: async (obj, { keyword }, context) => {
     throw new Error('Not implemented')
   },
+  relatedProducts: async (obj, { productId }, context) => await relatedProducts(productId),
   // isInWishlist: (obj, { token, productId }, context) => context.dataSources.db.isInWishlist(verifyAuthToken(token).uid, productId),
 }

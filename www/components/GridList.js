@@ -2,7 +2,7 @@ import React from "react"
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
-export default ({ items, children }) => <div className="grid-list">
+export default ({ colProps, items, children }) => <div className="grid-list">
   <Row>
     <style jsx global>{`
       .grid-list .grid-col {
@@ -10,11 +10,8 @@ export default ({ items, children }) => <div className="grid-list">
       }
     `}</style>
     {items && Array.isArray(items) ? items.map((item, idx) =>
-      <Col key={item.id || idx}
-           className="grid-col"
-           sm={12} md={6}
-           lg={4}>
-           {children(item)}
+      <Col key={item.id || idx} className="grid-col" {...(colProps || { sm: 12, md: 6, lg: 4 })}>
+           {children(item, idx)}
       </Col>
     ) : <></>}
   </Row>

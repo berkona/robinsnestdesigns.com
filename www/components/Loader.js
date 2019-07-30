@@ -8,9 +8,7 @@ export default (props) => (
     marginTop: '100px',
     marginBottom: '100px',
     justifyContent: 'center',
-    alignItems: 'center',
-    height: '100%', }
-  }>
+    alignItems: 'center' }}>
     <Loader color="#8BA8BC" type="square-spin" />
     <LoaderCSS />
   </div>

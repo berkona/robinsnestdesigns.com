@@ -26,6 +26,7 @@ const typeDefs = gql`
     allPromos(token: String!): [Promo!]!
     siteinfo: SiteInfo!
     similarKeywords(keyword: String!): [String!]!
+    relatedProducts(productId: ID!): [Product!]!
   }
 
   type SiteInfo {
