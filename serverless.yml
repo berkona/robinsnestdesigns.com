@@ -174,7 +174,7 @@ provider:
 functions:
   graphql:
     handler:                   api/handlers/graphql.lambda
-    reservedConcurrency:       8
+    reservedConcurrency:       4
     events:
       - http:
           path:                graphql
