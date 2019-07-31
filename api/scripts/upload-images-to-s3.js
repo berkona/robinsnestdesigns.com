@@ -29,6 +29,7 @@ const SITE_PREFIX = 'https://www.robinsnestdesigns.com/ahpimages/'
 
 let nInvalid = 0
 let nSkipped = 0
+let nUploaded = 0
 
 const downloadUrl = async (url, file) => {
   const res = await fetch(url)
@@ -64,7 +65,7 @@ const uploadUrl = (bucket, file) => new Promise((resolve, reject) => {
 })
 
 const processRow = async (row) => {
-  console.log('Processing ID ' + row.ID)
+  // console.log('Processing ID ' + row.ID)
 
   let imageUrl = null
   let urls = []
@@ -77,20 +78,20 @@ const processRow = async (row) => {
 
   for (let j = 0 ; j < urls.length; j++) {
     let testUrl = urls[j]
-    console.log('Checking url', testUrl)
+    // console.log('Checking url', testUrl)
     if (!testUrl) {
-      console.log('testUrl was null, skipping')
+      console.log('testUrl was null, skipping', testUrl)
       continue
     }
 
     if (testUrl.startsWith(CDN_URL)) {
-      console.log('found CDN url, skipping item')
+      // console.log('found CDN url, skipping item', testUrl)
       nSkipped++
-      break
+      return
     }
 
     if (testUrl.endsWith('/')) {
-      console.log('testUrl was directory')
+      console.log('testUrl was directory', testUrl)
       continue
     }
 
@@ -98,7 +99,7 @@ const processRow = async (row) => {
      && !testUrl.toLowerCase().endsWith('.gif')
      && !testUrl.toLowerCase().endsWith('.jpg')
      && !testUrl.toLowerCase().endsWith('.jpeg')) {
-      console.log('testUrl was not a valid image')
+      console.log('testUrl was not a valid image', testUrl)
       continue
     }
 
@@ -109,10 +110,10 @@ const processRow = async (row) => {
           imageUrl = testUrl
           break
         } else {
-          console.warn('Could not fetch url', res.status)
+          console.warn('Could not fetch url', testUrl, res.status)
         }
       } catch (err) {
-        console.warn('Could not fetch url', err)
+        console.warn('Could not fetch url', testUrl, err)
       }
     }
     if (imageUrl != null) break
@@ -134,6 +135,7 @@ const processRow = async (row) => {
 
   console.log('Uploaded to ', CDN_URL + file)
   await knex('Products').where('ID', row.ID).update({ Hyperlinked_Image: CDN_URL + file })
+  nUploaded++
 }
 
 async function main() {
@@ -149,6 +151,8 @@ async function main() {
         'Thumbnail'
       )
       .from('Products')
+      .where('Active', 1)
+      .whereNot('Hyperlinked_Image', 'like', CDN_URL + '%')
       .orderBy('ID', 'ASC')
       .offset(skip)
       .limit(batchSize)
@@ -157,7 +161,8 @@ async function main() {
 
     await Promise.all(rows.map(processRow))
   } while (rows.length > 0)
-  nInvalid = nInvalid - nSkipped
+  // nInvalid = nInvalid - nSkipped
+  await knex.destroy()
 }
 
-main().then(() => console.log('all images uploaded to s3: nInvalid={' + nInvalid + '} nSkipped={' + nSkipped + '}')).catch(err => console.error(err))
+main().then(() => console.log('all images uploaded to s3: ', { nUploaded, nSkipped, nInvalid, })).catch(err => console.error(err))
