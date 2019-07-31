@@ -209,3 +209,9 @@ functions:
           name:                prewarm-index-schedule-${self:custom.stage}
           rate:                rate(30 minutes)
           enabled:             true
+  robots-txt:
+    handler:                   api/handlers/robots.lambda
+    events:
+      - http:
+          path:                robots.txt
+          method:              get
