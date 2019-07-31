@@ -24,7 +24,7 @@ const redirectUrls = [
   },
   {
     src: /category_results\.cfm\?Category=(\d+)/,
-    dest: (_, categoryId) => `/search/c/${categoryId}`,
+    dest: (_, categoryId) => `/category/${categoryId}`,
   },
   {
     src: /results\.cfm/,
