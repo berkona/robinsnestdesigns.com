@@ -1,5 +1,5 @@
 const url = require('url')
-const { knex, withDB } = require('../db')
+const { knex, withDB, readDB } = require('../db')
 
 const redirectUrls = [
   {
@@ -45,11 +45,12 @@ const redirectUrls = [
       if (!subcategoryId) {
         return `/categories`
       } else {
-        const category = await knex
+        const query = knex
           .select('Category as categoryId')
           .from('Subcategory')
           .where('ID', subcategoryId)
           .first()
+        const category = await readDB(query, 'Subcategory')
         if (!category) {
           return `/categories`
         } else {
@@ -73,13 +74,14 @@ const redirectUrls = [
   },
 ]
 
-const handler = async (req, res) => withDB(async () => {
+const handler = async (req, res) => await withDB(async () => {
   const requestUrl = req.url
   console.log('redirecting', requestUrl)
   for (const cfg of redirectUrls) {
     const match = cfg.src.exec(requestUrl)
     if (match) {
-      const redirectPath = url.resolve(process.env.SITE_URL, await Promise.resolve(cfg.dest.apply(null, match)))
+      const pathname = await Promise.resolve(cfg.dest.apply(null, match))
+      const redirectPath = url.resolve(process.env.SITE_URL, pathname)
       res.setHeader('Location', redirectPath)
       res.status(301)
       res.send('Moved to: ' + redirectPath)
