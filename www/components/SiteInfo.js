@@ -20,7 +20,7 @@ const SiteInfo = () => (
         </div>
         <div id="footerCenter">
           Send questions and comments about needlework products to: robin@robinsnestdesigns.com<br></br>
-          Send questions and comments about the web site to: webmaster@pegweb.com
+          Send questions and comments about the web site to: jon@solipsisdev.com
         </div>
         <div id="footerRight">Site last modified: {new Date().getMonth()+1}/{new Date().getDate()}/{new Date().getFullYear()}</div>
     </div>

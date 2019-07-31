@@ -38,41 +38,32 @@ custom:
     routes:
       - src:                   index
         path:                  /
-        # response:
-        #   headers:
-        #     Cache-Control:   "'max-age=300'"
       - src:                   categories
         path:                  categories
-        # response:
-        #   headers:
-        #     Cache-Control:   "'max-age=300'"
       - src:                   category
         path:                  category/{categoryId}
         request:
           parameters:
             paths:
               categoryId:      true
-        # response:
-        #   headers:
-        #     Cache-Control:   "'max-age=300'"
       - src:                   order
         path:                  order/{orderId}
         request:
           parameters:
             paths:
               orderId:         true
-        # response:
-        #   headers:
-        #     Cache-Control:   "'max-age=300'"
+      - src:                   product
+        path:                  product/{productId}
+        request:
+          parameters:
+            paths:
+              productId:       true
       - src:                   product
         path:                  product/{productId}/{catSlug}/{cat2Slug}/{slug}
         request:
           parameters:
             paths:
               productId:       true
-        # response:
-        #   headers:
-        #     Cache-Control:   "'max-age=300'"
       - src:                   search
         path:                  search/c/{categoryId}/sc/{subcategoryId}/p/{pageNo}
         request:
@@ -81,9 +72,6 @@ custom:
               categoryId:      true
               subcategoryId:   true
               pageNo:          true
-        # response:
-        #   headers:
-        #     Cache-Control:   "'max-age=300'"
       - src:                   search
         path:                  search/c/{categoryId}/sc/{subcategoryId}
         request:
@@ -91,9 +79,6 @@ custom:
             paths:
               categoryId:      true
               subcategoryId:   true
-        # response:
-        #   headers:
-        #     Cache-Control:   "'max-age=300'"
       - src:                   search
         path:                  search/c/{categoryId}/p/{pageNo}
         request:
@@ -101,27 +86,18 @@ custom:
             paths:
               categoryId:      true
               pageNo:          true
-        # response:
-        #   headers:
-        #     Cache-Control:   "'max-age=300'"
       - src:                   search
         path:                  search/c/{categoryId}
         request:
           parameters:
             paths:
               categoryId:      true
-        # response:
-        #   headers:
-        #     Cache-Control:   "'max-age=300'"
       - src:                   search
         path:                  search/p/{pageNo}
         request:
           parameters:
             paths:
               pageNo:          true
-        # response:
-        #   headers:
-        #     Cache-Control:   "'max-age=300'"
       - src:                   search
         path:                  search
       - src:                   admin/product-details
@@ -198,31 +174,31 @@ functions:
     handler:                   api/handlers/redirect.lambda
     events:
       - http:
-          path:                /whats_new.cfm
+          path:                whats_new.cfm
           method:              get
       - http:
-          path:                /add_to_cart.cfm
+          path:                add_to_cart.cfm
           method:              get
       - http:
-          path:                /wish_list.cfm
+          path:                wish_list.cfm
           method:              get
       - http:
-          path:                /Newsletters/newsletter-signup.cfm
+          path:                Newsletters/newsletter-signup.cfm
           method:              get
       - http:
-          path:                /search.cfm
+          path:                search.cfm
           method:              get
       - http:
-          path:                /category_results.cfm
+          path:                category_results.cfm
           method:              get
       - http:
-          path:                /results.cfm
+          path:                results.cfm
           method:              get
       - http:
-          path:                /Results.cfm
+          path:                Results.cfm
           method:              get
       - http:
-          path:                /detail.cfm
+          path:                detail.cfm
           method:              get
   prewarm-index:
     handler:                   api/handlers/prewarmer.lambda

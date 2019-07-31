@@ -53,9 +53,7 @@ const redirectUrls = [
 ]
 
 const handler = async (req, res) => {
-  const requestPath = req.params.requestPath || req.url || ""
-  const queryStr = url.parse(req.url).href.split('?')[1] || ""
-  const requestUrl = requestPath + (queryStr ? ('?' + queryStr) : '')
+  const requestUrl = req.url
   console.log('redirecting', requestUrl)
   for (const cfg of redirectUrls) {
     const match = cfg.src.exec(requestUrl)
