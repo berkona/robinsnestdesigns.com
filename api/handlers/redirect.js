@@ -1,5 +1,5 @@
 const url = require('url')
-const knex = require('../knex')
+const { knex, withDB } = require('../db')
 
 const redirectUrls = [
   {
@@ -27,25 +27,34 @@ const redirectUrls = [
     dest: (_, categoryId) => `/category/${categoryId}`,
   },
   {
-    src: /results\.cfm/,
+    src: /results\.cfm.*/,
     dest: async (url) => {
-      url = new URL(url)
-      const subcategoryId = url.searchParams.get('SubCategory')
-      const startRow = url.searchParams.get('StartRow')
+      const queryStr = url.split('?', 2)[1] || ""
+      const queryObj = queryStr.split('&').reduce((a, s) => {
+        const [ key, value ] = s.split('=', 2)
+        a[key] = value || true
+        return a
+      }, {})
+      const subcategoryId = queryObj.SubCategory
+      const startRow = queryObj.StartRow || 0
       const pageNo = Math.ceil(startRow / 50)
-      const category = await knex
-        .select('Category as categoryId')
-        .from('Subcategory')
-        .where('ID', subcategoryId)
-        .first()
-      if (!category) {
+      if (!subcategoryId) {
         return `/categories`
       } else {
-        const { categoryId } = category
-        if (pageNo > 1) {
-          return `/search/c/${categoryId}/sc/${subcategoryId}/p/${pageNo}`
+        const category = await knex
+          .select('Category as categoryId')
+          .from('Subcategory')
+          .where('ID', subcategoryId)
+          .first()
+        if (!category) {
+          return `/categories`
         } else {
-          return `/search/c/${categoryId}/sc/${subcategoryId}`
+          const { categoryId } = category
+          if (pageNo > 1) {
+            return `/search/c/${categoryId}/sc/${subcategoryId}/p/${pageNo}`
+          } else {
+            return `/search/c/${categoryId}/sc/${subcategoryId}`
+          }
         }
       }
     }
@@ -60,7 +69,7 @@ const redirectUrls = [
   },
 ]
 
-const handler = async (req, res) => {
+const handler = async (req, res) => withDB(async () => {
   const requestUrl = req.url
   console.log('redirecting', requestUrl)
   for (const cfg of redirectUrls) {
@@ -75,7 +84,7 @@ const handler = async (req, res) => {
   }
   res.status(404)
   res.send('Not found')
-}
+})
 
 const app = require('express')()
 app.get('*', handler)
