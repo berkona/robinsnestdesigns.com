@@ -30,6 +30,7 @@ Router.events.on('routeChangeError', () => NProgress.done())
 class MyApp extends App {
   static async getInitialProps(args) {
     let { Component, ctx } = args
+    console.log('App.getInitialProps', { path: ctx.asPath, err: ctx.err,  })
     let _innerProps = {}
     if (Component.getInitialProps) {
       _innerProps = await Component.getInitialProps(ctx)
