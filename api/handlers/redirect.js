@@ -7,6 +7,10 @@ const redirectUrls = [
     dest: () => "/ShippingInfo/shipping"
   },
   {
+    src: /\/ShippingInfo\/shippingratesnew\.cfm/,
+    dest: () => "/ShippingInfo/shippingratesnew"
+  },
+  {
     src: /\/whats_new\.cfm/,
     dest: () => "/search?onSaleOnly=true&sortOrder=mostRecent"
   },

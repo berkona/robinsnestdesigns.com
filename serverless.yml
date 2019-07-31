@@ -177,6 +177,9 @@ functions:
           path:                ShippingInfo/shipping.cfm
           method:              get
       - http:
+          path:                ShippingInfo/shippingratesnew.cfm
+          method:              get
+      - http:
           path:                whats_new.cfm
           method:              get
       - http:
