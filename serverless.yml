@@ -195,9 +195,6 @@ functions:
           path:                results.cfm
           method:              get
       - http:
-          path:                Results.cfm
-          method:              get
-      - http:
           path:                detail.cfm
           method:              get
   prewarm-index:
