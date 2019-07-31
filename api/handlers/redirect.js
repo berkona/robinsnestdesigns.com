@@ -27,8 +27,12 @@ const redirectUrls = [
     dest: (_, categoryId) => `/search/c/${categoryId}`,
   },
   {
-    src: /results\.cfm\?SubCategory=(\d+)/,
-    dest: async (_, subcategoryId) => {
+    src: /results\.cfm/,
+    dest: async (url) => {
+      url = new URL(url)
+      const subcategoryId = url.searchParams.get('SubCategory')
+      const startRow = url.searchParams.get('StartRow')
+      const pageNo = Math.ceil(startRow / 50)
       const category = await knex
         .select('Category as categoryId')
         .from('Subcategory')
@@ -38,7 +42,11 @@ const redirectUrls = [
         return `/categories`
       } else {
         const { categoryId } = category
-        return `/search/c/${categoryId}/sc/${subcategoryId}`
+        if (pageNo > 1) {
+          return `/search/c/${categoryId}/sc/${subcategoryId}/p/${pageNo}`
+        } else {
+          return `/search/c/${categoryId}/sc/${subcategoryId}`
+        }
       }
     }
   },
