@@ -180,6 +180,9 @@ functions:
           path:                ShippingInfo/shippingratesnew.cfm
           method:              get
       - http:
+          path:                on_sale.cfm
+          method:              get
+      - http:
           path:                whats_new.cfm
           method:              get
       - http:

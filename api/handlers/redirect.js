@@ -11,8 +11,12 @@ const redirectUrls = [
     dest: () => "/ShippingInfo/shippingratesnew"
   },
   {
-    src: /\/whats_new\.cfm/,
+    src: /\/on_sale\.cfm/,
     dest: () => "/search?onSaleOnly=true&sortOrder=mostRecent"
+  },
+  {
+    src: /\/whats_new\.cfm/,
+    dest: () => "/search?newOnly=true&sortOrder=mostRecent"
   },
   {
     src: /\/add_to_cart\.cfm/,
