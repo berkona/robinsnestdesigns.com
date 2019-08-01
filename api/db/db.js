@@ -11,6 +11,9 @@ const QUERY_RETRIES = 10
 const QUERY_DELAY_MIN = 100
 const QUERY_DELAY_FACTOR = 1.55909
 
+const ETIMEOUT = 'ETIMEOUT'
+const EREQUEST = 'EREQUEST'
+
 const cache = new NamespacedCache({
   max: CACHE_MAX_SIZE,
   maxAge: CACHE_MAX_AGE,
@@ -40,6 +43,8 @@ const runQueryWithRetry = async (query) => {
       return await runQuery(query)
     } catch (err) {
       console.error('runQueryWithRetry', 'error', err)
+      const retryRequest = err.code != EREQUEST
+      if (!retryRequest) bail()
       throw err
     }
   }, {
