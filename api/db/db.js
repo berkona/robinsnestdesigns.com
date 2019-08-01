@@ -44,8 +44,8 @@ const runQueryWithRetry = async (query) => {
     } catch (err) {
       console.error('runQueryWithRetry', 'error', err)
       const retryRequest = err.code != EREQUEST
-      if (!retryRequest) bail()
-      throw err
+      if (!retryRequest) bail(err)
+      else throw err
     }
   }, {
     retries: QUERY_RETRIES,
