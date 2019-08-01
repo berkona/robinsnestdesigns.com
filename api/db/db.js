@@ -9,7 +9,7 @@ const CACHE_MAX_AGE = 30 * 60 * 1000
 
 const QUERY_RETRIES = 10
 const QUERY_DELAY_MIN = 100
-const QUERY_DELAY_FACTOR = 2
+const QUERY_DELAY_FACTOR = 1.55909
 
 const cache = new NamespacedCache({
   max: CACHE_MAX_SIZE,
