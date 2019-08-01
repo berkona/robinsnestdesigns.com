@@ -126,6 +126,7 @@ class MyApp extends App {
             </PageView>
           </CurrentUserProvider>
         </ApolloProvider>
+        <script async src="https://embed.tawk.to/5d4240e47d27204601c8aaf2/default" crossorigin="*" charset="UTF-8" />
       </Container>
     )
   }
