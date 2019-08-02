@@ -11,13 +11,21 @@ const canApplyPromo = (promo, items, subtotal) => {
 }
 
 const calcPromo = (promo, subtotal, shipping) => {
-  if (promo.PercentageOff) {
-    return ( Number.parseFloat(subtotal) * promo.PercentageOff ).toFixed(2)
-  } else if (promo.FreeShipping) {
-    return shipping || '0.00'
-  } else {
-    return promo.MoneyOff || '0.00'
+  if (!Number.isFinite(Number.parseFloat(shipping))) {
+    shipping = '0.00'
   }
+  
+  let totalDiscount = 0
+  if (promo.PercentageOff) {
+    totalDiscount += Number.parseFloat(subtotal) * promo.PercentageOff
+  }
+  if (promo.FreeShipping) {
+    totalDiscount += Number.parseFloat(shipping) || 0
+  }
+  if (promo.MoneyOff) {
+    totalDiscount += Number.parseFloat(promo.MoneyOff) || 0
+  }
+  return totalDiscount.toFixed(2)
 }
 
 const reduceOrder = (orderId, rows, shipping, county, promo) => {
