@@ -37,15 +37,41 @@ const query = gql`
         id
         qty
         price
+        variant
         product {
           id
           sku
           name
+          productVariants {
+            id
+            text
+          }
         }
       }
     }
   }
 `
+
+const OrderCell = ({ align, children }) => <td>
+  <style jsx>{`
+    td {
+      border-top: #CCCCCC solid 1px;
+    }
+    div {
+      font-size: 16px;
+    }
+    div.align-left {
+      text-align: left;
+    }
+    div.align-center {
+      text-align: center;
+    }
+    div.align-right {
+      text-align: right;
+    }
+  `}</style>
+  <div className={'align-' + (align || 'left')}>{children}</div>
+</td>
 
 const OrderPage = withRouter(
   (props) => <Col><div style={{ paddingLeft: '10px', paddingRight: '10px' }}><Query query={query} variables={{ orderId: props.router.query.orderId }}>
@@ -74,57 +100,58 @@ const OrderPage = withRouter(
           <Table className="cartItems" width="100%" cellPadding="2" cellSpacing="0" style={{borderTop: "#CCCCCC solid 1px"}}>
             <tbody>
             <tr className="header" bgcolor="#587E98">
-<td bgcolor="#587E98"><font color="#ffffff"><b><div align="center"> Item ID </div></b></font></td>
-<td bgcolor="#587E98"><font color="#ffffff"><b><div align="center"> Item Name </div></b></font></td>
-<td bgcolor="#587E98"><font color="#ffffff"><b><div align="center"> Quantity </div></b></font></td>
-<td bgcolor="#587E98"><font color="#ffffff"><b><div align="center"> Price </div></b></font></td>
-<td bgcolor="#587E98"><font color="#ffffff"><b><div align="center"> Subtotal </div></b></font></td>
-</tr>
-
-              {data.cart.items.map(({ id, product, qty, price }) => {
+              <td bgcolor="#587E98"><font color="#ffffff"><b><div align="center"> Item ID </div></b></font></td>
+              <td bgcolor="#587E98"><font color="#ffffff"><b><div align="center"> Item Name </div></b></font></td>
+              <td bgcolor="#587E98"><font color="#ffffff"><b><div align="center"> Option </div></b></font></td>
+              <td bgcolor="#587E98"><font color="#ffffff"><b><div align="center"> Quantity </div></b></font></td>
+              <td bgcolor="#587E98"><font color="#ffffff"><b><div align="center"> Price </div></b></font></td>
+              <td bgcolor="#587E98"><font color="#ffffff"><b><div align="center"> Subtotal </div></b></font></td>
+            </tr>
+              {data.cart.items.map(({ id, product, qty, price, variant }) => {
                 return <tr key={id} className="odd" bgcolor="#E4EDF4">
-                  <td style={{borderTop: "#CCCCCC solid 1px"}}>
-                    <div align="center">
-                      <Link href={`/product?productId=${product.id}`} as={`/product/${product.id}`}>
-                        <a>{product.sku}</a>
-                      </Link>
-                    </div>
-                  </td>
-                  <td style={{borderTop: "#CCCCCC solid 1px"}}>
-                    <div align="left">
-                      <font size="-1">{product.name}</font>
-                    </div>
-                  </td>
-                  <td style={{borderTop: "#CCCCCC solid 1px"}}>
-                    <div align="center">
-                      <font size="-1">{qty}</font>
-                    </div>
-                  </td>
-                  <td style={{borderTop: "#CCCCCC solid 1px"}}><div align="right">${price.toFixed(2)}</div></td>
-                  <td style={{borderTop: "#CCCCCC solid 1px"}}><div align="right">${(qty * price).toFixed(2)}</div></td>
+                  <OrderCell>
+                    <Link href={`/product?productId=${product.id}`} as={`/product/${product.id}`}>
+                      <a>{product.sku}</a>
+                    </Link>
+                  </OrderCell>
+                  <OrderCell>
+                    {product.name}
+                  </OrderCell>
+                  <OrderCell>
+                    {variant && product.productVariants.filter(v => v.id == variant).map(v => v.text)[0] || ""}
+                  </OrderCell>
+                  <OrderCell align="center">
+                    {qty}
+                  </OrderCell>
+                  <OrderCell align="right">
+                    ${price.toFixed(2)}
+                  </OrderCell>
+                  <OrderCell align="right">
+                    ${(qty * price).toFixed(2)}
+                  </OrderCell>
                 </tr>
               })}
  <tr>
-      <td colSpan="4" align="right" style={{borderTop: "#CCCCCC solid 1px"}}><strong>Subtotal:</strong></td>
+      <td colSpan="5" align="right" style={{borderTop: "#CCCCCC solid 1px"}}><strong>Subtotal:</strong></td>
       <td style={{borderTop: "#CCCCCC solid 1px"}} align="right"><strong>${data.cart.subtotal.toFixed(2)}</strong></td>
   </tr>
   <tr>
-     <td colSpan="4" align="right" style={{borderTop: "#CCCCCC solid 1px"}}><strong>Shipping:</strong></td>
+     <td colSpan="5" align="right" style={{borderTop: "#CCCCCC solid 1px"}}><strong>Shipping:</strong></td>
      <td style={{borderTop: "#CCCCCC solid 1px"}} align="right"><strong>${data.cart.shipping.toFixed(2)}</strong></td>
    </tr>
    {
      data.cart.discount > 0 &&
      <tr>
-          <td colSpan="4" align="right" style={{borderTop: "#CCCCCC solid 1px"}}><strong>Discount:</strong></td>
+          <td colSpan="5" align="right" style={{borderTop: "#CCCCCC solid 1px"}}><strong>Discount:</strong></td>
           <td style={{borderTop: "#CCCCCC solid 1px"}} align="right"><strong>${data.cart.discount.toFixed(2)}</strong></td>
       </tr>
    }
    <tr>
-      <td colSpan="4" align="right" style={{borderTop: "#CCCCCC solid 1px"}}><strong>Tax:</strong></td>
+      <td colSpan="5" align="right" style={{borderTop: "#CCCCCC solid 1px"}}><strong>Tax:</strong></td>
       <td style={{borderTop: "#CCCCCC solid 1px"}} align="right"><strong>${data.cart.tax.toFixed(2)}</strong></td>
     </tr>
     <tr>
-       <td colSpan="4" align="right" style={{borderTop: "#CCCCCC solid 1px"}}><strong>Total:</strong></td>
+       <td colSpan="5" align="right" style={{borderTop: "#CCCCCC solid 1px"}}><strong>Total:</strong></td>
        <td style={{borderTop: "#CCCCCC solid 1px"}} align="right"><strong>${data.cart.total.toFixed(2)}</strong></td>
      </tr>
   </tbody></Table>
