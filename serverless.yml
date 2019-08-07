@@ -5,6 +5,7 @@ plugins:
   - serverless-nextjs-plugin
   - serverless-plugin-split-stacks
   - serverless-plugin-aws-alerts
+  - serverless-plugin-ncc
 
 custom:
   stage:                       ${opt:stage, 'dev'}
@@ -150,7 +151,7 @@ provider:
 functions:
   graphql:
     handler:                   api/handlers/graphql.lambda
-    reservedConcurrency:       4
+    reservedConcurrency:       64
     events:
       - http:
           path:                graphql
