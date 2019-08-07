@@ -79,7 +79,7 @@ class CartPage extends React.Component {
 
   render() {
     return <>
-      <SEO title="My Cart" description="View the items in your cart at Robin's Nest Designs" />
+      <SEO canonical="/cart" title="My Cart" description="View the items in your cart at Robin's Nest Designs" />
     <CurrentUserContext.Consumer>
       {currentUser => {
         const cartId = currentUser.getCartId()
