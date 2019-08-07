@@ -17,8 +17,6 @@ module.exports = async(obj, { token, productId, productData }, context) => {
     ItemPrice: productData.price,
     SalePrice: productData.salePrice,
     Qty: productData.qtyInStock,
-    Sale_Start: new Date(Number.parseInt(productData.saleStart)).toISOString(),
-    Sale_Stop: new Date(Number.parseInt(productData.saleEnd)).toISOString(),
     Description: productData.description,
     Hyperlinked_Image: productData.hyperlinkedImage,
     Category: productData.categoryId,
@@ -28,6 +26,14 @@ module.exports = async(obj, { token, productId, productData }, context) => {
     CategoryC: productData.category3,
     SubCategoryC: productData.subcategory3,
     Keywords: productData.keywords,
+  }
+
+  if (productData.saleStart) {
+    patch.Sale_Start = new Date(Number.parseInt(productData.saleStart)).toISOString()
+  }
+
+  if (productData.saleEnd) {
+    patch.Sale_Stop = new Date(Number.parseInt(productData.saleEnd)).toISOString()
   }
 
   const fields = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
