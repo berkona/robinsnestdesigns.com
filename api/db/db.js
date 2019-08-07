@@ -13,6 +13,7 @@ const QUERY_DELAY_FACTOR = 1.55909
 
 const ETIMEOUT = 'ETIMEOUT'
 const EREQUEST = 'EREQUEST'
+const ER_NOT_SUPPORTED_YET = 'ER_NOT_SUPPORTED_YET'
 
 const cache = new NamespacedCache({
   max: CACHE_MAX_SIZE,
@@ -44,6 +45,7 @@ const runQueryWithRetry = async (query) => {
     } catch (err) {
       console.error('runQueryWithRetry', 'error', err)
       const retryRequest = err.code != EREQUEST
+                        && err.code != ER_NOT_SUPPORTED_YET
       if (!retryRequest) bail(err)
       else throw err
     }

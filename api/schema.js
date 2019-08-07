@@ -1,14 +1,17 @@
 const { gql } = require('./apollo-server')
 const resolvers = require('./resolvers')
-const { makeExecutableSchema } = require('graphql-tools')
+// const { makeExecutableSchema } = require('graphql-tools')
+
+// in seconds
+const CACHEABLE_TTL = 300
 
 // Construct a schema, using GraphQL schema language
 const typeDefs = gql`
   type Query {
-    category(categoryId: ID!): Category!
-    allCategories: [Category!]!
-    allSubcategories(categoryId: ID): [SubCategory!]!
-    product(productId: ID!): Product
+    category(categoryId: ID!): Category! @cacheControl(maxAge: ${CACHEABLE_TTL})
+    allCategories: [Category!]! @cacheControl(maxAge: ${CACHEABLE_TTL})
+    allSubcategories(categoryId: ID): [SubCategory!]! @cacheControl(maxAge: ${CACHEABLE_TTL})
+    product(productId: ID!): Product @cacheControl(maxAge: ${CACHEABLE_TTL})
     allProducts(
       categoryId: ID,
       subcategoryId: ID,
@@ -19,22 +22,22 @@ const typeDefs = gql`
       skip: Int,
       limit: Int,
       sort: ProductSortType
-    ): ProductList!
+    ): ProductList! @cacheControl(maxAge: ${CACHEABLE_TTL})
     cart(orderId: ID!, shipping: Float, county: String, promo: String): Order
     user(token: String!): User
     wishlist(token: String!): [WishListItem!]!
-    allPromos(token: String!): [Promo!]!
-    siteinfo: SiteInfo!
-    similarKeywords(keyword: String!): [String!]!
-    relatedProducts(productId: ID!): [Product!]!
-    topSellingProducts(limit: Int): [Product!]!
+    allPromos(token: String!): [Promo!]! @cacheControl(maxAge: ${CACHEABLE_TTL})
+    siteinfo: SiteInfo! @cacheControl(maxAge: ${CACHEABLE_TTL})
+    similarKeywords(keyword: String!): [String!]! @cacheControl(maxAge: ${CACHEABLE_TTL})
+    relatedProducts(productId: ID!): [Product!]! @cacheControl(maxAge: ${CACHEABLE_TTL})
+    topSellingProducts(limit: Int): [Product!]! @cacheControl(maxAge: ${CACHEABLE_TTL})
   }
 
   type SiteInfo {
     paypalClientId: String!
   }
 
-  type Promo {
+  type Promo @cacheControl(maxAge: ${CACHEABLE_TTL}) {
     id: ID!
     coupon: String!
     starts: Date!
@@ -213,21 +216,21 @@ const typeDefs = gql`
       random
   }
 
-  type Category {
+  type Category @cacheControl(maxAge: ${CACHEABLE_TTL}) {
     id: ID!
     title: String!
     comments: String
     image: String
   }
 
-  type SubCategory {
+  type SubCategory @cacheControl(maxAge: ${CACHEABLE_TTL}) {
     id: ID!
     title: String!
     comments: String
     image: String
   }
 
-  type ProductList {
+  type ProductList @cacheControl(maxAge: ${CACHEABLE_TTL}) {
     total: Int!
     records: [Product!]!
     categories: [Category!]!
@@ -279,7 +282,7 @@ const typeDefs = gql`
     text: String!
   }
 
-  type Product {
+  type Product @cacheControl(maxAge: ${CACHEABLE_TTL}) {
     id: Int!
     sku: String!
     name: String!
@@ -314,7 +317,7 @@ const typeDefs = gql`
 
 `
 
-module.exports = makeExecutableSchema({
+module.exports = {
   typeDefs,
   resolvers,
-})
+}

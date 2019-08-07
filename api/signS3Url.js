@@ -1,11 +1,7 @@
-const aws = require('aws-sdk')
+const aws = require('./aws')
 
-// Configure aws with your accessKeyId and your secretAccessKey
-aws.config.update({
-  region: 'us-east-1', // Put your aws region here
-  accessKeyId: process.env.AWSAccessKeyId,
-  secretAccessKey: process.env.AWSSecretKey
-})
+if (!process.env.AWSUploadBucket)
+  throw new Error('set AWSUploadBucket in environment')
 
 const S3_BUCKET = process.env.AWSUploadBucket
 

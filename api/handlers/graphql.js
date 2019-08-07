@@ -1,15 +1,21 @@
 const { ApolloServer } = require('../apollo-server')
-const schema = require('../schema')
+const {
+  typeDefs,
+  resolvers,
+} = require('../schema')
 const { withDB } = require('../db')
+const responseCachePlugin = require('apollo-server-plugin-response-cache')
 
 // TODO: better detection here
 const isDev = process.env.NODE_ENV != "production"
 
 const server = new ApolloServer({
-  schema,
+  typeDefs,
+  resolvers,
   introspection: isDev,
   playground: isDev,
   tracing: isDev,
+  plugins: [responseCachePlugin()],
 })
 
 const graphqlHandler = server.createHandler({
