@@ -18,8 +18,6 @@ module.exports = async(obj, { token, productData }, context) => {
     ItemPrice: productData.price,
     SalePrice: productData.salePrice,
     Qty: productData.qtyInStock,
-    Sale_Start: productData.saleStart && new Date(Number.parseInt(productData.saleStart)).toISOString(),
-    Sale_Stop: productData.saleEnd && new Date(Number.parseInt(productData.saleEnd)).toISOString(),
     Description: productData.description || null,
     Hyperlinked_Image: productData.hyperlinkedImage || null,
     Category: productData.categoryId,
@@ -30,6 +28,14 @@ module.exports = async(obj, { token, productData }, context) => {
     SubCategoryC: productData.subcategory3 | null,
     Keywords: productData.keywords || null,
     Added: new Date(),
+  }
+
+  if (productData.saleStart) {
+    patch.Sale_Start = new Date(Number.parseInt(productData.saleStart)).toISOString()
+  }
+
+  if (productData.saleEnd) {
+    patch.Sale_Stop = new Date(Number.parseInt(productData.saleEnd)).toISOString()
   }
 
   const fields = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
@@ -61,13 +67,13 @@ module.exports = async(obj, { token, productData }, context) => {
   }
 
   if (product.category2)
-    product.category2 = await getTitle(() => context.dataSources.db.getCategory(product.category2))
+    product.category2 = await getTitle(() => getCategory(product.category2))
   if (product.category3)
-    product.category3 = await getTitle(() => context.dataSources.db.getCategory(product.category3))
+    product.category3 = await getTitle(() => getCategory(product.category3))
   if (product.subcategory2)
-    product.subcategory2 = await getTitle(() => context.dataSources.db.getSubcategory(product.subcategory2))
+    product.subcategory2 = await getTitle(() => getSubcategory(product.subcategory2))
   if (product.subcategory3)
-    product.subcategory3 = await getTitle(() => context.dataSources.db.getSubcategory(product.subcategory3))
+    product.subcategory3 = await getTitle(() => getSubcategory(product.subcategory3))
 
   await searchEngine.add(product)
   return product
