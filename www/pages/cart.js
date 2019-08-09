@@ -15,7 +15,7 @@ import { ORDER_GET } from '../constants/queries'
 import Button from 'react-bootstrap/Button'
 import Wishlist from '../components/Wishlist'
 import ContentWithSidebar from '../components/ContentWithSidebar'
-
+import Loader from '../components/Loader'
 
 const CURRENT_USER = gql`
 query($token: String!) {
@@ -99,11 +99,12 @@ class CartPage extends React.Component {
             >
               {
                 ({ loading, error, data }) => {
+                  if (loading) return <Loader />
                   if (error) return <div>Error fetching data: <span>{error.message}</span></div>
                   const cart = data.cart;
                   if (cart && cart.placed) {
                     currentUser.deleteCartId()
-                    return <p>Order already placed</p>
+                    return <EmptyShoppingCart />
                   }
                   if (!cart || cart.items.length == 0) {
                     return <EmptyShoppingCart />
