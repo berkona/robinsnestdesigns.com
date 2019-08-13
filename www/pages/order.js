@@ -162,6 +162,6 @@ const OrderPage = withRouter(
   </Query></div></Col>
 )
 
-OrderPage.getInitialProps = SetCacheControl(600)
+OrderPage.getInitialProps = SetCacheControl(60 * 60)
 
 export default OrderPage

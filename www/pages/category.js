@@ -83,6 +83,6 @@ const Category = withRouter(({ router }) => <ContentWithSidebar>
   </Query>
 </ContentWithSidebar>)
 
-Category.getInitialProps = SetCacheControl(600)
+Category.getInitialProps = SetCacheControl(60 * 60)
 
 export default Category

@@ -119,6 +119,6 @@ const Index = (props) => (
   </>
 )
 
-Index.getInitialProps = SetCacheControl(600)
+Index.getInitialProps = SetCacheControl(60 * 60)
 
 export default Index
