@@ -4,7 +4,7 @@ const resolvers = require('./resolvers')
 
 // in seconds
 const ONE_DAY = 60 * 60 * 24
-const 5_MIN = 60 * 5
+const FIVE_MIN = 60 * 5
 
 // Construct a schema, using GraphQL schema language
 const typeDefs = gql`
@@ -12,10 +12,10 @@ const typeDefs = gql`
 
     siteinfo: SiteInfo! @cacheControl(maxAge: ${ONE_DAY})
 
-    category(categoryId: ID!): Category! @cacheControl(maxAge: ${5_MIN})
-    allCategories: [Category!]! @cacheControl(maxAge: ${5_MIN})
-    allSubcategories(categoryId: ID): [SubCategory!]! @cacheControl(maxAge: ${5_MIN})
-    product(productId: ID!): Product @cacheControl(maxAge: ${5_MIN})
+    category(categoryId: ID!): Category! @cacheControl(maxAge: ${FIVE_MIN})
+    allCategories: [Category!]! @cacheControl(maxAge: ${FIVE_MIN})
+    allSubcategories(categoryId: ID): [SubCategory!]! @cacheControl(maxAge: ${FIVE_MIN})
+    product(productId: ID!): Product @cacheControl(maxAge: ${FIVE_MIN})
     allProducts(
       categoryId: ID,
       subcategoryId: ID,
@@ -26,22 +26,24 @@ const typeDefs = gql`
       skip: Int,
       limit: Int,
       sort: ProductSortType
-    ): ProductList! @cacheControl(maxAge: ${5_MIN})
-    allPromos(token: String!): [Promo!]! @cacheControl(maxAge: ${5_MIN})
-    similarKeywords(keyword: String!): [String!]! @cacheControl(maxAge: ${5_MIN})
-    relatedProducts(productId: ID!): [Product!]! @cacheControl(maxAge: ${5_MIN})
-    topSellingProducts(limit: Int): [Product!]! @cacheControl(maxAge: ${5_MIN})
+    ): ProductList! @cacheControl(maxAge: ${FIVE_MIN})
+
+    similarKeywords(keyword: String!): [String!]! @cacheControl(maxAge: ${FIVE_MIN})
+    relatedProducts(productId: ID!): [Product!]! @cacheControl(maxAge: ${FIVE_MIN})
+    topSellingProducts(limit: Int): [Product!]! @cacheControl(maxAge: ${FIVE_MIN})
 
     cart(orderId: ID!, shipping: Float, county: String, promo: String): Order
     user(token: String!): User
     wishlist(token: String!): [WishListItem!]!
+
+    allPromos(token: String!): [Promo!]!
   }
 
   type SiteInfo {
     paypalClientId: String!
   }
 
-  type Promo @cacheControl(maxAge: ${5_MIN}) {
+  type Promo {
     id: ID!
     coupon: String!
     starts: Date!
@@ -220,21 +222,21 @@ const typeDefs = gql`
       random
   }
 
-  type Category @cacheControl(maxAge: ${5_MIN}) {
+  type Category @cacheControl(maxAge: ${FIVE_MIN}) {
     id: ID!
     title: String!
     comments: String
     image: String
   }
 
-  type SubCategory @cacheControl(maxAge: ${5_MIN}) {
+  type SubCategory @cacheControl(maxAge: ${FIVE_MIN}) {
     id: ID!
     title: String!
     comments: String
     image: String
   }
 
-  type ProductList @cacheControl(maxAge: ${5_MIN}) {
+  type ProductList @cacheControl(maxAge: ${FIVE_MIN}) {
     total: Int!
     records: [Product!]!
     categories: [Category!]!
@@ -286,7 +288,7 @@ const typeDefs = gql`
     text: String!
   }
 
-  type Product @cacheControl(maxAge: ${5_MIN}) {
+  type Product @cacheControl(maxAge: ${FIVE_MIN}) {
     id: Int!
     sku: String!
     name: String!
@@ -313,7 +315,7 @@ const typeDefs = gql`
     keywords: String!
   }
 
-  type ProductVariant @cacheControl(maxAge: ${5_MIN}) {
+  type ProductVariant @cacheControl(maxAge: ${FIVE_MIN}) {
     id: ID!
     price: Float!
     text: String!
