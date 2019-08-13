@@ -75,6 +75,79 @@ class ProductTeaserOverlay extends React.Component {
 
     render() {
       const wishListVars = { token: this.props.currentUser.getToken(), productId: this.props.product.id }
+
+      const AddToCartBtn = () => {
+        return <Mutation
+          mutation={ADD_TO_CART}
+          variables={{
+            productId: this.props.product.id,
+            orderId: this.props.currentUser.getCartId(),
+            qty: 1,
+          }}
+          refetchQueries={() => [{ query: CART_GET, variables: { orderId: this.props.currentUser.getCartId() }}]}
+          onCompleted={(data) => {
+            if (!this.props.currentUser.getCartId() && data && data.addToCart && data.addToCart.id) {
+              console.log('setting cartId to ', data.addToCart.id)
+              this.props.currentUser.setCartId(data.addToCart.id)
+            }
+            Actions.AddToCart({
+              sku: this.props.product.sku,
+              name: this.props.product.name,
+              category: this.props.product.category + '/' + this.props.product.subcategory,
+              price: this.props.product.isOnSale ? this.props.product.price : this.props.product.salePrice,
+              qty: 1,
+              list: this.props.list,
+              position: this.props.position,
+            })
+          }}
+          >
+          {(mutationFn, { loading, error, data }) => {
+            if (loading) {
+              return <LoadingButton />
+            }
+            if (error) {
+              console.error('could not add to cart', error);
+              return <ErrorButton error={error} />
+            }
+            if (data) {
+              return <OverlayTrigger
+                 delay={{ show: 250, hide: 100 }}
+                 overlay={<Tooltip>Item added to your cart</Tooltip>}>
+                 <Button variant="success" onClick={(e) => { e.preventDefault(); e.stopPropagation(); Router.push('/cart'); }}>
+                <FaCheckCircle />
+                <span className="sr-only">Item added to your cart</span>
+              </Button>
+              </OverlayTrigger>
+            }
+
+            if (this.props.product.productVariants.length !== 0) {
+              return <OverlayTrigger
+                 delay={{ show: 250, hide: 100 }}
+                 overlay={<Tooltip>Click to add to cart from detail page</Tooltip>}>
+              <Button
+                variant="light"
+                style={{ fontSize: '20px' }}>
+                <FaCartPlus />
+                <span className="sr-only">Click to add to cart from detail page</span>
+              </Button>
+              </OverlayTrigger>
+            } else {
+              return <OverlayTrigger
+                 delay={{ show: 250, hide: 100 }}
+                 overlay={<Tooltip>Add item to your cart</Tooltip>}>
+              <Button
+                variant="light"
+                onClick={(e) => { e.preventDefault(); e.stopPropagation(); mutationFn(); }}
+                style={{ fontSize: '20px' }}>
+                <FaCartPlus />
+                <span className="sr-only">Add item to your cart</span>
+              </Button>
+              </OverlayTrigger>
+            }
+          }}
+        </Mutation>
+      }
+
       return <div style={{ height: '100%', width: '100%' }} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
         {this.props.children}
         <Fade in={this.state.showOverlay}>
@@ -152,109 +225,43 @@ class ProductTeaserOverlay extends React.Component {
                   </OverlayTrigger>
                 }
 
-                <Query query={CART_GET} variables={{ orderId: this.props.currentUser.getCartId() }}>
-                  {({ loading, error, data }) => {
-                    const AddToCartBtn = () => {
-                      return <Mutation
-                        mutation={ADD_TO_CART}
-                        variables={{
-                          productId: this.props.product.id,
-                          orderId: this.props.currentUser.getCartId(),
-                          qty: 1,
-                        }}
-                        refetchQueries={() => [{ query: CART_GET, variables: { orderId: this.props.currentUser.getCartId() }}]}
-                        onCompleted={(data) => {
-                          if (!this.props.currentUser.getCartId() && data && data.addToCart && data.addToCart.id) {
-                            console.log('setting cartId to ', data.addToCart.id)
-                            this.props.currentUser.setCartId(data.addToCart.id)
-                          }
-                          Actions.AddToCart({
-                            sku: this.props.product.sku,
-                            name: this.props.product.name,
-                            category: this.props.product.category + '/' + this.props.product.subcategory,
-                            price: this.props.product.isOnSale ? this.props.product.price : this.props.product.salePrice,
-                            qty: 1,
-                            list: this.props.list,
-                            position: this.props.position,
-                          })
-                        }}
-                        >
-                        {(mutationFn, { loading, error, data }) => {
-                          if (loading) {
-                            return <LoadingButton />
-                          }
-                          if (error) {
-                            console.error('could not add to cart', error);
-                            return <ErrorButton error={error} />
-                          }
-                          if (data) {
-                            return <OverlayTrigger
-                               delay={{ show: 250, hide: 100 }}
-                               overlay={<Tooltip>Item added to your cart</Tooltip>}>
-                               <Button variant="success" onClick={(e) => { e.preventDefault(); e.stopPropagation(); Router.push('/cart'); }}>
-                              <FaCheckCircle />
-                              <span className="sr-only">Item added to your cart</span>
-                            </Button>
-                            </OverlayTrigger>
-                          }
+                {
+                  this.props.currentUser.getCartId()
+                  ? <Query query={CART_GET} variables={{ orderId: this.props.currentUser.getCartId() }}>
+                    {({ loading, error, data }) => {
 
-                          if (this.props.product.productVariants.length !== 0) {
-                            return <OverlayTrigger
-                               delay={{ show: 250, hide: 100 }}
-                               overlay={<Tooltip>Click to add to cart from detail page</Tooltip>}>
-                            <Button
-                              variant="light"
-                              style={{ fontSize: '20px' }}>
-                              <FaCartPlus />
-                              <span className="sr-only">Click to add to cart from detail page</span>
-                            </Button>
-                            </OverlayTrigger>
-                          } else {
-                            return <OverlayTrigger
-                               delay={{ show: 250, hide: 100 }}
-                               overlay={<Tooltip>Add item to your cart</Tooltip>}>
-                            <Button
-                              variant="light"
-                              onClick={(e) => { e.preventDefault(); e.stopPropagation(); mutationFn(); }}
-                              style={{ fontSize: '20px' }}>
-                              <FaCartPlus />
-                              <span className="sr-only">Add item to your cart</span>
-                            </Button>
-                            </OverlayTrigger>
-                          }
-                        }}
-                      </Mutation>
-                    }
+                      if (loading) {
+                        return <LoadingButton />
+                      }
 
-                    if (loading) {
-                      return <LoadingButton />
-                    }
+                      if (error) {
+                        // prolly just no cart
+                        return <AddToCartBtn />
+                      }
 
-                    if (error) {
-                      // prolly just no cart
-                      return AddToCartBtn()
-                    }
+                      const [ firstMatchingItem ] = (data
+                                         && data.cart
+                                         && data.cart.items
+                                         && data.cart.items.filter((x) => x.product.id ==  this.props.product.id)
+                                         || [])
+                      const isInCart = !!firstMatchingItem
+                      if (isInCart) {
+                        return <OverlayTrigger
+                           delay={{ show: 250, hide: 100 }}
+                           overlay={<Tooltip>Item already added to your cart</Tooltip>}>
+                           <Button variant="success" onClick={(e) => { e.preventDefault(); e.stopPropagation(); Router.push('/cart'); }}>
+                          <FaCheckCircle />
+                          <span className="sr-only">Item already added to your cart</span>
+                        </Button>
+                        </OverlayTrigger>
+                      } else {
+                        return <AddToCartBtn />
+                      }
+                    }}
+                  </Query>
+                  : <AddToCartBtn />
+                }
 
-                    const [ firstMatchingItem ] = (data
-                                       && data.cart
-                                       && data.cart.items
-                                       && data.cart.items.filter((x) => x.product.id ==  this.props.product.id)
-                                       || [])
-                    const isInCart = !!firstMatchingItem
-                    if (isInCart) {
-                      return <OverlayTrigger
-                         delay={{ show: 250, hide: 100 }}
-                         overlay={<Tooltip>Item already added to your cart</Tooltip>}>
-                         <Button variant="success" onClick={(e) => { e.preventDefault(); e.stopPropagation(); Router.push('/cart'); }}>
-                        <FaCheckCircle />
-                        <span className="sr-only">Item already added to your cart</span>
-                      </Button>
-                      </OverlayTrigger>
-                    } else {
-                      return AddToCartBtn()
-                    }
-                  }}
-                </Query>
               </div>
             </div>
           </div>

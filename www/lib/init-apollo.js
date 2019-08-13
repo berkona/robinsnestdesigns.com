@@ -1,7 +1,8 @@
 import { toIdValue } from 'apollo-utilities'
+import { createPersistedQueryLink } from "apollo-link-persisted-queries";
+import { createHttpLink } from "apollo-link-http";
 import { ApolloClient } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
-import { BatchHttpLink } from "apollo-link-batch-http"
 import { RetryLink } from "apollo-link-retry"
 import { ApolloLink } from 'apollo-link'
 import { API_URL } from '../constants/config'
@@ -43,11 +44,12 @@ function create (initialState, req) {
         jitter: true
       },
       attempts: {
-        max: 10,
+        max: process.browser ? Infinity : 3,
         retryIf: (error, _operation) => !!error
-      }
+      },
     }),
-    new BatchHttpLink({
+    createPersistedQueryLink({ useGETForHashedQueries: true }),
+    createHttpLink({
       uri: API_URL
     }),
   ])

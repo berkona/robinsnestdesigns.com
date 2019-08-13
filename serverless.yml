@@ -157,16 +157,13 @@ functions:
     events:
       - http:
           path:                graphql
+          method:              get
+      - http:
+          path:                graphql
           method:              post
       - http:
           path:                graphql
           method:              options
-  playground:
-    handler:                   api/handlers/playground.lambda
-    events:
-      - http:
-          path:                graphql
-          method:              get
   sitemap:
     handler:                   api/handlers/sitemap.lambda
     events:
