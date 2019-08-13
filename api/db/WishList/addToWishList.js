@@ -8,7 +8,7 @@ module.exports = async (uid, productId) => {
   console.log('addToWishList enter')
   if (await isInWishlist(uid, productId)) return
   console.log('addToWishList writeDB')
-  return await writeDB(
+  await writeDB(
     knex('WishList')
       .insert({ AccountID: uid, ItemID: productId })
     , 'WishList'

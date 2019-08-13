@@ -255,7 +255,7 @@ class SearchPage extends React.Component {
   }
 }
 
-SearchPage.getInitialProps = SetCacheControl(600)
+SearchPage.getInitialProps = SetCacheControl(60 * 60)
 
 SearchPage = withRouter(SearchPage)
 

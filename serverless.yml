@@ -2,10 +2,10 @@ service:                       robinsnestdesigns
 
 plugins:
   - serverless-offline
-  - serverless-plugin-ncc
   - serverless-nextjs-plugin
   - serverless-plugin-split-stacks
   - serverless-plugin-aws-alerts
+  - serverless-plugin-ncc
   - serverless-api-compression
 
 custom:
@@ -131,12 +131,12 @@ provider:
   environment:
     SITE_URL:                  ${self:custom.config.siteUrl}
     API_URL:                   ${self:custom.config.apiUrl}
-    SQL_ENGINE:                mssql
-    SQL_PORT:                  1433
-    SQL_HOST:                  ${ssm:rsmSQLHostPegwebProd}
-    SQL_USER:                  ${ssm:rsmSQLUserPegwebProd}
-    SQL_PWD:                   ${ssm:rsmSQLPasswordPegwebProd}
-    SQL_DB:                    ${ssm:rsmSQLDatabasePegwebProd}
+    SQL_ENGINE:                mysql
+    SQL_PORT:                  23306
+    SQL_HOST:                  ${ssm:rsmSQLHostRDS}
+    SQL_USER:                  ${ssm:rsmSQLUserRDS}
+    SQL_PWD:                   ${ssm:rsmSQLPasswordRDS}
+    SQL_DB:                    ${ssm:rsmSQLDatabaseRDS}
     PAYPAL_CLIENTID:           ${ssm:rsmPayPalClientID-${self:custom.stage}}
     PAYPAL_CLIENTSECRET:       ${ssm:rsmPayPalClientSecret-${self:custom.stage}}
     PAYPAL_ENVIRONMENT:        ${ssm:rsmPayPalEnvironment-${self:custom.stage}}
@@ -148,11 +148,12 @@ provider:
     AWSUploadBucket:           ${ssm:rsmAWSUploadBucket}
     MAILGUN_API_KEY:           ${ssm:rsmMailgunApiKey}
     ENGINE_API_KEY:            ${ssm:rsmApolloEngineApiKey}
+    CacheDynamoDB:             rsm-robinsnestdesigns-api-cache
 
 functions:
   graphql:
     handler:                   api/handlers/graphql.lambda
-    reservedConcurrency:       4
+    reservedConcurrency:       64
     events:
       - http:
           path:                graphql
@@ -223,3 +224,10 @@ functions:
       - http:
           path:                robots.txt
           method:              get
+  search-engine-import:
+    handler:                   api/handlers/search-engine-import.processAllProducts
+    events:
+      - schedule:
+        name:                  search-engine-import-schedule-${self:custom.stage}
+        rate:                  rate(12 hours)
+        enabled:               true

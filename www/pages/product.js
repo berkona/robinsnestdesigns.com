@@ -10,6 +10,6 @@ const ProductPage = withRouter((props) => (
   </ContentWithSidebar>
 ))
 
-ProductPage.getInitialProps = SetCacheControl(600)
+ProductPage.getInitialProps = SetCacheControl(60 * 60)
 
 export default ProductPage

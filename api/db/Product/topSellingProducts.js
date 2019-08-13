@@ -1,11 +1,13 @@
-const getAllProducts = require('./getAllProducts')
+const productFields = require('./productFields')
 const { knex, readDB } = require('../db')
+const reduceProduct = require('../../reducers/reduceProduct')
 
 module.exports = async (after, limit) => {
   after = after || Date.now() - 30 * 24 * 60 * 60 * 1000
   limit = limit || 8
+
   const query = knex
-    .select('Products.ID')
+    .select(productFields)
     .from(
       knex
         .select('ItemID')
@@ -16,8 +18,12 @@ module.exports = async (after, limit) => {
         .as('t1')
     )
     .innerJoin('Products', 'Products.ItemID', 't1.ItemID')
-    .where('Active', 1)
+    .innerJoin('Category', 'Products.Category', 'Category.ID')
+    .innerJoin('Subcategory', 'Products.SubCategory', 'Subcategory.ID')
+    .where('Products.Active', 1)
     .orderBy('totalSold', 'desc')
     .limit(limit)
-  return await getAllProducts(query, limit)
+
+  const result = await readDB(query, 'Products')
+  return result.map(reduceProduct)
 }

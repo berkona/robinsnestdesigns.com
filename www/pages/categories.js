@@ -50,5 +50,5 @@ const Categories = () => <ContentWithSidebar>
   </Query>
 </ContentWithSidebar>
 
-Categories.getInitialProps = SetCacheControl(600)
+Categories.getInitialProps = SetCacheControl(60 * 60)
 export default Categories
