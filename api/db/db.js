@@ -58,12 +58,12 @@ const getMaxConnections = async () => {
 	// If cache is expired
 	if (Date.now() - _maxConns.updated > CONNS_FREQ_MAX) {
 
-		let results = await knex.raw(
+		let results = await runQueryWithRetry(knex.raw(
 			`SELECT IF(@@max_user_connections > 0,
       LEAST(@@max_user_connections,@@max_connections),
       @@max_connections) AS total,
       IF(@@max_user_connections > 0,true,false) AS userLimit`
-		)
+		))
 
 		// Update _maxConns
 		_maxConns = {
@@ -84,10 +84,10 @@ const getTotalConnections = async () => {
 	// If cache is expired
 	if (Date.now() - _usedConns.updated > CONNS_FREQ_USED) {
 
-		let results = await knex.raw(
+		let results = await runQueryWithRetry(knex.raw(
 			`SELECT COUNT(ID) as total, MAX(time) as max_age
       FROM information_schema.processlist
-      WHERE (user = ? AND @@max_user_connections > 0) OR true`, [DB_USER])
+      WHERE (user = ? AND @@max_user_connections > 0) OR true`, [DB_USER]))
 
 		_usedConns = {
 			total: results[0].total || 0,
@@ -107,11 +107,11 @@ const killZombieConnections = async (timeout) => {
 	let killedZombies = 0
 
 	// Hunt for zombies (just the sleeping ones that this user owns)
-	let zombies = await knex.raw(
+	let zombies = await runQueryWithRetry(knex.raw(
 		`SELECT ID,time FROM information_schema.processlist
       WHERE command = "Sleep" AND time >= ? AND user = ?
       ORDER BY time DESC`,
-		[!isNaN(timeout) ? timeout : 60 * 15, DB_USER])
+		[!isNaN(timeout) ? timeout : 60 * 15, DB_USER]))
 
 	// Kill zombies
 	for (let i = 0; i < zombies.length; i++) {

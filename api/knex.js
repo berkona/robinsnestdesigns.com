@@ -11,7 +11,7 @@ if (!process.env.SQL_ENGINE || !process.env.SQL_PORT || !process.env.SQL_HOST ||
       password: process.env.SQL_PWD,
       database: process.env.SQL_DB,
     },
-    pool: { min: 0, max: 8 }
+    pool: { min: 0, max: 16 }
   })
   module.exports = knex
 }
