@@ -12,7 +12,7 @@ import SEO from '../components/SEO'
 import { PRODUCT_GET_PAGE } from '../constants/queries'
 import Button from 'react-bootstrap/Button'
 import { FaTimes, FaPlus } from 'react-icons/fa'
-import { SearchLink } from '../components/Links'
+import { SearchLink, SearchLinkStr } from '../components/Links'
 import SetCacheControl from '../lib/set-cache-control'
 
 export const seoQuery = gql`
@@ -127,6 +127,7 @@ const SearchPageSEO = (props) => {
             let subcategory = props.subcategoryId && data.allSubcategories.filter((x) => x.id == props.subcategoryId)[0]
             subcategory = subcategory && subcategory.title
             return <SEO
+              canonical={SearchLinkStr(props)}
               title={makeTitle(props.searchPhrase, data.category.title, subcategory)}
               description={makeDescription(props.searchPhrase, data.category.title, subcategory)}
               keywords={SearchPageKeywords(products, data.category.title, subcategory)}
@@ -136,6 +137,7 @@ const SearchPageSEO = (props) => {
         </Query>
       } else {
         return <SEO
+          canonical={SearchLinkStr(props)}
           title={makeTitle(props.searchPhrase)}
           description={makeDescription(props.searchPhrase) || description}
           keywords={SearchPageKeywords(products)}

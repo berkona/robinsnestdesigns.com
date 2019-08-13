@@ -6,10 +6,12 @@ plugins:
   - serverless-plugin-split-stacks
   - serverless-plugin-aws-alerts
   - serverless-plugin-ncc
+  - serverless-api-compression
 
 custom:
   stage:                       ${opt:stage, 'dev'}
   config:                      ${file(config.${self:custom.stage}.yml)}
+  contentCompression:          1024
   ncc:
     cache:                     false
   splitStacks:

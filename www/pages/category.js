@@ -42,12 +42,12 @@ const Category = withRouter(({ router }) => <ContentWithSidebar>
       : error ? <ApolloError error={error} />
       : (!data || !data.category) ? <></>
       : <>
-        <SEO title={"Browse " + data.category.title} description={"Browse all the subcategories of " + data.category.title + " at Robin's Nest Designs"} />
+        <SEO canonical={"/category/" + router.query.categoryId} title={"Browse " + data.category.title} description={"Browse all the subcategories of " + data.category.title + " at Robin's Nest Designs"} />
         <div className="clearfix" style={{ marginTop: '10px' }}>
           <div className="float-left">
           <Breadcrumb>
             <Breadcrumb.Item href={"/categories"}>All categories</Breadcrumb.Item>
-            <Breadcrumb.Item href={"/categories/" + router.query.categoryId} active>
+            <Breadcrumb.Item href={"/category/" + router.query.categoryId} active>
               {data.category.title}
             </Breadcrumb.Item>
           </Breadcrumb>

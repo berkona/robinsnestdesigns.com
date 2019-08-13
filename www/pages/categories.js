@@ -26,7 +26,7 @@ query {
 `
 
 const Categories = () => <ContentWithSidebar>
-  <SEO title="Browse All Categories" description="Browse all the categories at Robin's Nest Designs" />
+  <SEO canonical="/categories" title="Browse All Categories" description="Browse all the categories at Robin's Nest Designs" />
   <div className="clearfix" style={{ marginTop: '10px' }}>
     <div className="float-left">
       <Breadcrumb>

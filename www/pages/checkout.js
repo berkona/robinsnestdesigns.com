@@ -82,7 +82,7 @@ class CheckoutPage extends React.Component {
   render() {
     return <Col>
       <div style={{padding: '24px'}}>
-      <SEO title="Checkout" description="Pay for your order at Robin's Nest Designs" />
+      <SEO canonical={"/checkout"} title="Checkout" description="Pay for your order at Robin's Nest Designs" />
       <CurrentUserContext.Consumer>
         {currentUser => {
           if (!currentUser.getCartId()) {
