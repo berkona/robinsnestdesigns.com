@@ -8,7 +8,7 @@ export default () => <>
     {
       (carouselItems || []).map((__html, i) => (
         <Carousel.Item key={i}>
-          <div dangerouslySetInnerHTML={{ __html, }}></div>
+          <div style={{ height: '500px' }} dangerouslySetInnerHTML={{ __html, }}></div>
         </Carousel.Item>
       ))
     }
