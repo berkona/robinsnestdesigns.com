@@ -160,7 +160,7 @@ const runQueryWithRetry = async (query) => {
 			return await runQuery(query)
 		} catch (err) {
 			console.error('db.runQueryWithRetry', 'error', err)
-			if (!TOO_MANY_CONN_ERRORS.includes(e.code)) {
+			if (!TOO_MANY_CONN_ERRORS.includes(err.code)) {
 				bail()
 			}
 			throw err
