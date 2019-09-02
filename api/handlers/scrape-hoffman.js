@@ -193,7 +193,7 @@ const startJobs = async (startTime, maxRunTime) => {
   }
 }
 
-const main = withDB(async () => {
+const main = () => withDB(async () => {
   const startTime = Date.now()
   const maxRunTime = 25000
   const browser = await puppeteer.launch({
