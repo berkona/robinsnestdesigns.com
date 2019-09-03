@@ -13,7 +13,7 @@ const handle = nextApp.getRequestHandler()
 nextApp.prepare().then(() => {
   const expressApp = express()
 
-  const graphql = require('./api/handlers/graphql').server
+  const graphql = require('./api/handlers/graphql')
   graphql.applyMiddleware({ app: expressApp })
 
   const sitemap = require('./api/handlers/sitemap').handler

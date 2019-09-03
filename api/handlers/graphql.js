@@ -20,6 +20,14 @@ const server = new ApolloServer({
 
 module.exports = {
   server,
+  applyMiddleware: ({ app }) => server.applyMiddleware({
+    app,
+    cors: {
+      origin: true,
+      credentials: true,
+      allowedHeaders: 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,X-Apollo-Tracing'
+    },
+  })
 }
 
 // const graphqlHandler = server.createHandler({
