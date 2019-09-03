@@ -174,8 +174,7 @@ const handler = async (hostname) => {
   return await timeAsyncFn(() => urls.toString(), 'sitemap.createSitemap')
 }
 
-const app = require('express')()
-app.get('*', (req, res) => withDB(async () => {
+const expressHandler = (req, res) => withDB(async () => {
   try {
     const hostname = process.env.SITE_URL
     if (!hostname) throw new Error('set SITE_URL in env')
@@ -191,9 +190,8 @@ app.get('*', (req, res) => withDB(async () => {
     res.status(500)
     res.send("Internal server error")
   }
-}))
+})
 
-const serverless = require('serverless-http')
-
-module.exports = {}
-module.exports.lambda = serverless(app)
+module.exports = {
+  handler: expressHandler
+}

@@ -1,1 +1,1 @@
-module.exports = require('apollo-server-lambda')
+module.exports = require('apollo-server-express')

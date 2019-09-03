@@ -1,7 +1,7 @@
 // next.config.js
 module.exports = {
-  target: 'serverless',
-  assetPrefix: "https://public-static-build-assets-2f3e5d.robinsnestdesigns.com",
+  // target: 'serverless',
+  // assetPrefix: "https://public-static-build-assets-2f3e5d.robinsnestdesigns.com",
   webpack: (config, { defaultLoaders, dir }) => {
     const rulesExceptBabelLoaderRule = config.module.rules.filter(
       rule => rule.use !== defaultLoaders.babel

@@ -100,8 +100,6 @@ const handler = async (req, res) => await withDB(async () => {
   res.send('Not found')
 })
 
-const app = require('express')()
-app.get('*', handler)
-const serverless = require('serverless-http')
-module.exports = {}
-module.exports.lambda = serverless(app)
+module.exports = {
+  handler,
+}
