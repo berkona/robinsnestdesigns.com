@@ -9,9 +9,12 @@ import Cookies from 'nookies'
 import { CurrentUserProvider } from '../lib/auth'
 // import { initGA } from '../lib/react-ga'
 import { initGA, PageView } from '../lib/next-ga-ec'
+import { hotjar } from 'react-hotjar';
+import { ThemeProvider } from '@material-ui/styles'
+import theme from '../constants/theme';
+
 const USER_TOKEN = 'USER_TOKEN'
 const USER_CART = 'CUSTOMERID'
-import { hotjar } from 'react-hotjar';
 
 NProgress.configure({
   showSpinner: false,
@@ -69,7 +72,7 @@ class MyApp extends App {
     const CurrentUser = {
       login: (newToken) => {
         Cookies.set(null, USER_TOKEN, newToken, {
-          maxAge:  30 * 24 * 60 * 60,
+          maxAge:  14 * 24 * 60 * 60,
           path: '/',
         })
         this.setState({
@@ -117,16 +120,18 @@ class MyApp extends App {
     }
     return (
       <Container>
-        <ApolloProvider client={apolloClient}>
-          <CurrentUserProvider value={CurrentUser}>
-            <PageView>
-              <Layout>
-                <Component {...pageProps} {..._innerProps} />
-              </Layout>
-            </PageView>
-          </CurrentUserProvider>
-        </ApolloProvider>
-        <script async src="https://embed.tawk.to/5d4240e47d27204601c8aaf2/default" crossorigin="*" charset="UTF-8" />
+        <ThemeProvider theme={theme}>
+          <ApolloProvider client={apolloClient}>
+            <CurrentUserProvider value={CurrentUser}>
+              <PageView>
+                <Layout>
+                  <Component {...pageProps} {..._innerProps} />
+                </Layout>
+              </PageView>
+            </CurrentUserProvider>
+          </ApolloProvider>
+        </ThemeProvider>
+        <script async src="https://embed.tawk.to/5d4240e47d27204601c8aaf2/default" crossOrigin="*" charSet="UTF-8" />
       </Container>
     )
   }
