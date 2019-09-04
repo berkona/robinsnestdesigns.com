@@ -12,7 +12,7 @@ import { Query } from 'react-apollo'
 
 const steps = ['Shipping', 'Review', 'Payment']
 
-const QueryOrder = ({ orderId, shipping, promo, children }) => <Query query={ORDER_GET} variables={{ orderId, shipping: Number.parseFloat(shipping) || 0.00, promo: promo || null, }}>
+const QueryOrder = ({ orderId, county, shipping, promo, children }) => <Query query={ORDER_GET} fetchPolicy="cache-and-network" variables={{ orderId, county: county || null, shipping: Number.parseFloat(shipping) || 0.00, promo: promo || null, }}>
   {({ loading, error, data }) => error ? <ApolloError error={error} />
     : !data ? <Loader />
     : children ? children(data)
@@ -40,13 +40,14 @@ export default ({ orderId }) => {
     state: '',
     zip: '',
     country: 'US',
+    county: null,
   })
 
   const [ shippingType, setShippingType ] = React.useState('3.99')
 
   const [ promo, setPromo ] = React.useState('')
 
-  const stepContent = <QueryOrder orderId={orderId} shipping={shippingType} promo={promo}>
+  const stepContent = <QueryOrder orderId={orderId} county={shippingAddress.county} hipping={shippingType} promo={promo}>
     {({ cart, }) => {
       const cartData = cart
       const props = {

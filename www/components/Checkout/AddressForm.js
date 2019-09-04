@@ -6,6 +6,8 @@ import CheckoutNavButtons from './CheckoutNavButtons'
 import ShippingOptions from './ShippingOptions'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
+import COUNTIES from '../../constants/nc-counties'
+import STATES from '../../constants/states'
 import COUNTRIES from '../../constants/countries'
 import InputLabel from '@material-ui/core/InputLabel'
 import FormControl from '@material-ui/core/FormControl'
@@ -93,13 +95,22 @@ export default ({ handleBack, handleNext, shippingAddress, setShippingAddress, s
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField
+        {
+          shippingAddress.country == 'US' ? <FormControl required fullWidth>
+            <InputLabel>State</InputLabel>
+            <Select value={shippingAddress.state} onChange={handleFieldChange('state')}>
+              {STATES.map(({ name, abbreviation }) => <MenuItem key={abbreviation} value={abbreviation}>{name}</MenuItem>)}
+            </Select>
+          </FormControl>
+          : <TextField
             id="state"
             name="state"
             label="State/Province/Region"
             fullWidth
             value={shippingAddress.state}
             onChange={handleFieldChange('state')} />
+        }
+
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
@@ -121,6 +132,16 @@ export default ({ handleBack, handleNext, shippingAddress, setShippingAddress, s
             </Select>
           </FormControl>
         </Grid>
+        {shippingAddress.country == 'US' && shippingAddress.state == 'NC' &&
+          <Grid item xs={12} sm={6}>
+          <FormControl required fullWidth>
+            <InputLabel>County</InputLabel>
+            <Select value={shippingAddress.county} onChange={handleFieldChange('county')}>
+              {COUNTIES.map((name) => <MenuItem key={name} value={name}>{name}</MenuItem>)}
+            </Select>
+          </FormControl>
+          </Grid>
+        }
       </Grid>
       <Typography variant="h4" gutterBottom style={{ marginTop: '24px' }}>
         Shipping Method
