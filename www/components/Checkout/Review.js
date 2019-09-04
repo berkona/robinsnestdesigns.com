@@ -1,31 +1,15 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Grid from '@material-ui/core/Grid';
+import React from 'react'
+import { makeStyles } from '@material-ui/core/styles'
+import Typography from '@material-ui/core/Typography'
+import TextField from '@material-ui/core/TextField'
+import Grid from '@material-ui/core/Grid'
 import CheckoutNavButtons from './CheckoutNavButtons'
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-
-const products = [
-  { name: 'Product 1', desc: 'A nice thing', price: '$9.99' },
-  { name: 'Product 2', desc: 'Another thing', price: '$3.45' },
-  { name: 'Product 3', desc: 'Something else', price: '$6.51' },
-  { name: 'Product 4', desc: 'Best thing of all', price: '$14.11' },
-  { name: 'Shipping', desc: '', price: 'Free' },
-];
-const addresses = ['1 Material-UI Drive', 'Reactville', 'Anytown', '99999', 'USA'];
-const payments = [
-  { name: 'Payment type', detail: 'Paypal' },
-  // { name: 'Card holder', detail: 'Mr John Smith' },
-  // { name: 'Card number', detail: 'xxxx-xxxx-xxxx-1234' },
-  // { name: 'Expiry date', detail: '04/2024' },
-];
+import Table from '@material-ui/core/Table'
+import TableBody from '@material-ui/core/TableBody'
+import TableCell from '@material-ui/core/TableCell'
+import TableHead from '@material-ui/core/TableHead'
+import TableRow from '@material-ui/core/TableRow'
+import Button from '@material-ui/core/Button'
 
 const useStyles = makeStyles(theme => ({
   listItem: {
@@ -41,20 +25,12 @@ const useStyles = makeStyles(theme => ({
 
 export default ({ orderId, handleBack, handleNext, cartData, shippingAddress, shippingType, promo, setPromo }) => {
   const classes = useStyles();
-  const products = (cartData && cartData.items && cartData.items.map(cartItem => { return {
-    name: cartItem.product.name,
-    desc: cartItem.variant ? cartItem.product.productVariants.filter(v => v.id == cartItem.variant)[0] : '',
-    price: '$' + cartItem.price,
-  }}) || []).concat([
-    { name: 'Subtotal', desc: '', price: '$' + cartData.subtotal.toFixed(2) },
-    { name: 'Shipping', desc: '', price: '$' + cartData.shipping.toFixed(2) },
-    { name: 'Discount', desc: '', price: '$' + cartData.discount.toFixed(2) },
-    { name: 'Tax', desc: '', price: '$' + cartData.tax.toFixed(2) },
-  ])
 
   const {
     subtotal, shipping, discount, tax, total,
   } = cartData
+
+  const [ newPromo, setNewPromo ] = React.useState(promo || '')
 
   return (
     <React.Fragment>
@@ -126,6 +102,32 @@ export default ({ orderId, handleBack, handleNext, cartData, shippingAddress, sh
               </TableRow>
             </TableBody>
           </Table>
+        </Grid>
+        <Grid item xs={12}>
+          <Typography variant="h4" gutterBottom>
+            Apply Promo
+          </Typography>
+        </Grid>
+        <Grid item xs={10}>
+          <TextField
+            required
+            id="promo"
+            name="promo"
+            label="Promo"
+            fullWidth
+            value={newPromo}
+            onChange={(evt) => setNewPromo(evt.target.value)}
+            error={promo && discount < 0.01}
+            helperText={promo && discount < 0.01 && 'This promotion is not active or cannot be applied to this order'}
+          />
+        </Grid>
+        <Grid item xs={2}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => setPromo(newPromo)}>
+            Apply
+          </Button>
         </Grid>
         <Grid item xs={12}>
           <CheckoutNavButtons handleBack={handleBack} handleNext={handleNext} canAdvance={true} />

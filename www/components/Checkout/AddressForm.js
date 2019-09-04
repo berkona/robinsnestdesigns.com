@@ -19,6 +19,8 @@ export default ({ handleBack, handleNext, shippingAddress, setShippingAddress, s
     setShippingAddress(newShippingAddress)
   }
 
+  const isZipValid = shippingAddress.country != 'US' || /\d{5}/.test(shippingAddress.zip)
+
   const isAddressValid = !!(shippingAddress.firstName
     && shippingAddress.lastName
     && shippingAddress.address1
@@ -26,7 +28,10 @@ export default ({ handleBack, handleNext, shippingAddress, setShippingAddress, s
     && shippingAddress.state
     && shippingAddress.zip
     && shippingAddress.country
+    && ( !(shippingAddress.country == 'US' && shippingAddress.state == 'NC') || shippingAddress.county )
+    && isZipValid
   )
+
 
   return (
     <React.Fragment>
@@ -120,6 +125,7 @@ export default ({ handleBack, handleNext, shippingAddress, setShippingAddress, s
             label="Zip / Postal code"
             fullWidth
             autoComplete="billing postal-code"
+            error={shippingAddress.zip.length > 0 && !isZipValid}
             value={shippingAddress.zip}
             onChange={handleFieldChange('zip')}
           />
