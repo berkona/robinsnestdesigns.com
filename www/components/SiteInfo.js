@@ -1,5 +1,5 @@
 const SiteInfo = () => (
-  <div id="siteInfo">
+  <div id="siteInfo" style={{ marginBottom: '16px'}}>
     <p>
     This site provides the onilne catalog for Robin's Nest Designs listing cross stitch charts (Mirabilia,
     Nora Corbett, Lavender and Lace, John Clayton), needlepoint canvases, crochet, knitting, quilting books,
@@ -19,8 +19,7 @@ const SiteInfo = () => (
           Copyright 1996-{new Date().getFullYear()} ©<br></br>Robin Monroe
         </div>
         <div id="footerCenter">
-          Send questions and comments about needlework products to: robin@robinsnestdesigns.com<br></br>
-          Send questions and comments about the web site to: jon@solipsisdev.com
+          Send questions and comments to: robin@robinsnestdesigns.com<br></br>
         </div>
         <div id="footerRight">Site last modified: {new Date().getMonth()+1}/{new Date().getDate()}/{new Date().getFullYear()}</div>
     </div>
