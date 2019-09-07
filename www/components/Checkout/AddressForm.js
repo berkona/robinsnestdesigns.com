@@ -11,8 +11,79 @@ import STATES from "../../constants/states";
 import COUNTRIES from "../../constants/countries";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
+import BlockQuery from "../BlockQuery";
+import { CurrentUser } from "../../lib/auth";
+import gql from "graphql-tag";
 
-export default ({
+const USER_QUERY = gql`
+  query($token: String!) {
+    user(token: $token) {
+      firstName
+      lastName
+      address
+      city
+      state
+      zip
+      country
+    }
+  }
+`;
+
+const USER_UPDATE = gql`
+  mutation($token: String!, $user: UserPatchInput!) {
+    user(token: $token, user: $user) {
+      firstName
+      lastName
+      address
+      city
+      state
+      zip
+      country
+    }
+  }
+`;
+
+const AddressFormUserWrapper = props => (
+  <CurrentUser>
+    {currentUser =>
+      currentUser.isLoggedIn() ? (
+        <BlockQuery
+          query={USER_QUERY}
+          variables={{ token: currentUser.getToken() }}
+        >
+          {({ data: { user } }) => {
+            const { shippingAddress, setShippingAddress } = props;
+
+            const newShippingAddress = { ...shippingAddress }
+            newShippingAddress.firstName = shippingAddress.firstName || user.firstName || '';
+            newShippingAddress.lastName = shippingAddress.lastName || user.lastName || '';
+            newShippingAddress.address1 = shippingAddress.address1 || user.address || '';
+            newShippingAddress.city = shippingAddress.city || user.city || '';
+            newShippingAddress.state = shippingAddress.state || user.state || '';
+            newShippingAddress.zip = shippingAddress.zip || user.zip || '';
+            newShippingAddress.country = shippingAddress.country || user.country || '';
+
+            const fields = ['firstName', 'lastName', 'address1', 'city', 'state','zip']
+
+            if (fields.some(fieldName => shippingAddress[fieldName] != newShippingAddress[fieldName]))
+              setShippingAddress(newShippingAddress)
+
+            return <AddressForm
+              {...{
+                ...props,
+                shippingAddress: newShippingAddress,
+              }}
+            />
+          }}
+        </BlockQuery>
+      ) : (
+        <AddressForm {...props} />
+      )
+    }
+  </CurrentUser>
+);
+
+const AddressForm = ({
   handleBack,
   handleNext,
   shippingAddress,
@@ -32,7 +103,7 @@ export default ({
   const isShippingAmountValid =
     shippingAddress.country === "US"
       ? ["3.99", "7.99", "0.00"].indexOf(shippingType) !== -1
-      : ["10.99", "25.99"].indexOf(shippingType) !== -1
+      : ["10.99", "25.99"].indexOf(shippingType) !== -1;
 
   const isAddressValid = !!(
     shippingAddress.firstName &&
@@ -189,24 +260,30 @@ export default ({
             </Grid>
           )}
       </Grid>
-      <Typography variant="h4" gutterBottom style={{ marginTop: "24px" }}>
-        Shipping Method
-      </Typography>
-      <Typography variant="subtitle2">Choose your shipping method</Typography>
-      <Grid item xs={12}>
-        <ShippingOptions
-          shippingAddress={shippingAddress}
-          value={shippingType}
-          setValue={setShippingType}
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <CheckoutNavButtons
-          handleBack={handleBack}
-          handleNext={handleNext}
-          canAdvance={isAddressValid && !!shippingType}
-        />
-      </Grid>
+      {shippingType && setShippingType && <>
+        <Typography variant="h4" gutterBottom style={{ marginTop: "24px" }}>
+          Shipping Method
+        </Typography>
+        <Typography variant="subtitle2">Choose your shipping method</Typography>
+        <Grid item xs={12}>
+          <ShippingOptions
+            shippingAddress={shippingAddress}
+            value={shippingType}
+            setValue={setShippingType}
+          />
+        </Grid>
+      </>}
+      {(handleBack || handleNext) && (
+        <Grid item xs={12}>
+          <CheckoutNavButtons
+            handleBack={handleBack}
+            handleNext={handleNext}
+            canAdvance={isAddressValid && !!shippingType}
+          />
+        </Grid>
+      )}
     </React.Fragment>
   );
 };
+
+export default AddressFormUserWrapper;

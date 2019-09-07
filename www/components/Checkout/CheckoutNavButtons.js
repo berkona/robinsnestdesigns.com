@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button'
 export default ({ handleBack, handleNext, canAdvance }) => <div>
   {
     (typeof handleBack == 'function') && (
-    <Button onClick={handleBack}>
+    <Button onClick={handleBack} variant="outlined" color="secondary">
       Back
     </Button>
   )

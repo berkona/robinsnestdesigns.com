@@ -77,19 +77,7 @@ export default function PaymentForm({
               Payment method
             </Typography>
             <Typography variant="subtitle1" gutterBottom>
-              Just one more thing!
-            </Typography>
-            <Typography variant="subtitle2" gutterBottom>
-              By placing an order you agree to the{" "}
-              <Link href="/ShippingInfo/shipping">
-                <a target="_blank">shipping terms/order processing</a>
-              </Link>{" "}
-              and
-              <Link href="/Policies/Policies">
-                <a style={{ paddingLeft: "5px" }} target="_blank">
-                  policies
-                </a>
-              </Link>
+              Click a payment method to place your order
             </Typography>
             <Grid container spacing={3}>
               <Grid item xs={4}>
@@ -206,6 +194,18 @@ export default function PaymentForm({
                 </CurrentUser>
               </Grid>
             </Grid>
+            <Typography variant="subtitle2" gutterBottom>
+              By placing an order you agree to the{" "}
+              <Link href="/ShippingInfo/shipping">
+                <a target="_blank">shipping terms/order processing</a>
+              </Link>{" "}
+              and
+              <Link href="/Policies/Policies">
+                <a style={{ paddingLeft: "5px" }} target="_blank">
+                  policies
+                </a>
+              </Link>
+            </Typography>
           </React.Fragment>
         )
       }

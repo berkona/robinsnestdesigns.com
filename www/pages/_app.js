@@ -63,6 +63,12 @@ class MyApp extends App {
       currentUserToken: cookies && cookies[USER_TOKEN],
       currentUserCartId: cookies && cookies[USER_CART],
     })
+
+    // Remove the server-side injected CSS.
+    const jssStyles = document.querySelector('#jss-server-side');
+    if (jssStyles) {
+      jssStyles.parentNode.removeChild(jssStyles);
+    }
   }
 
   render () {
