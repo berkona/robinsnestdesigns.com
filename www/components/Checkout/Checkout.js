@@ -47,7 +47,7 @@ export default ({ orderId }) => {
 
   const [ promo, setPromo ] = React.useState('')
 
-  const stepContent = <QueryOrder orderId={orderId} county={shippingAddress.county} hipping={shippingType} promo={promo}>
+  const stepContent = <QueryOrder orderId={orderId} county={shippingAddress.county} shipping={shippingType} promo={promo}>
     {({ cart, }) => {
       const cartData = cart
       const props = {
