@@ -10,6 +10,7 @@ import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Button from '@material-ui/core/Button'
+import PaymentForm from './PaymentForm'
 
 const useStyles = makeStyles(theme => ({
   listItem: {
@@ -37,7 +38,7 @@ export default ({ orderId, handleBack, handleNext, cartData, shippingAddress, sh
       <Typography variant="h4" gutterBottom>
         Review Order
       </Typography>
-      <Typography variant="subtitle2" gutterBottom>You're almost done!</Typography>
+      <Typography variant="subtitle1" gutterBottom>You're almost done!</Typography>
       <Typography variant="subtitle2" gutterBottom>Review your information before you place your order.</Typography>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
@@ -129,9 +130,18 @@ export default ({ orderId, handleBack, handleNext, cartData, shippingAddress, sh
             Apply
           </Button>
         </Grid>
-        <Grid item xs={12}>
-          <CheckoutNavButtons handleBack={handleBack} handleNext={handleNext} canAdvance={true} />
-        </Grid>
+      </Grid>
+      <Grid item xs={12} style={{ marginTop: '16px'}}>
+        <PaymentForm handleBack={handleBack} {...{
+          orderId,
+          cartData,
+          shippingAddress,
+          shippingType,
+          promo,
+        }} />
+      </Grid>
+      <Grid item xs={12}>
+        <CheckoutNavButtons handleBack={handleBack} />
       </Grid>
     </React.Fragment>
   );

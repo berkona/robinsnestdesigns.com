@@ -10,7 +10,7 @@ import ApolloError from '../ApolloError'
 import { ORDER_GET } from '../../constants/queries'
 import { Query } from 'react-apollo'
 
-const steps = ['Shipping', 'Review', 'Payment']
+const steps = ['Shipping', 'Review', ]
 
 const QueryOrder = ({ orderId, county, shipping, promo, children }) => <Query query={ORDER_GET} fetchPolicy="cache-and-network" variables={{ orderId, county: county || null, shipping: Number.parseFloat(shipping) || 0.00, promo: promo || null, }}>
   {({ loading, error, data }) => error ? <ApolloError error={error} />
