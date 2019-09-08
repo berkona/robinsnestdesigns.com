@@ -128,9 +128,9 @@ const SearchPageSEO = (props) => {
             subcategory = subcategory && subcategory.title
             return <SEO
               canonical={SearchLinkStr(props)}
-              title={makeTitle(props.searchPhrase, data.category.title, subcategory)}
-              description={makeDescription(props.searchPhrase, data.category.title, subcategory)}
-              keywords={SearchPageKeywords(products, data.category.title, subcategory)}
+              title={makeTitle(props.searchPhrase, data.category && data.category.title, subcategory)}
+              description={makeDescription(props.searchPhrase, data.category && data.category.title, subcategory)}
+              keywords={SearchPageKeywords(products, data.category && data.category.title, subcategory)}
               />
           }
         }}
