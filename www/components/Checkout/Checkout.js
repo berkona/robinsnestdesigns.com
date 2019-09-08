@@ -15,7 +15,7 @@ const steps = ["Shipping", "Review"];
 const QueryOrder = ({ orderId, county, shipping, promo, children }) => (
   <Query
     query={ORDER_GET}
-    fetchPolicy="cache-and-network"
+    fetchPolicy="network-only"
     variables={{
       orderId,
       county: county || null,
