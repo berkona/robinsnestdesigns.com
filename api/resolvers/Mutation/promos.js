@@ -1,4 +1,4 @@
-const { verifyAuthToken } = require('../../auth')
+const { verifyAuthTokenAsync } = require('../../auth')
 const insertPromo = require('../../db/Promotions/insertPromo')
 const updatePromo = require('../../db/Promotions/updatePromo')
 const deletePromo = require('../../db/Promotions/deletePromo')
@@ -7,7 +7,7 @@ const reducePromo = require('../../reducers/reducePromo')
 
 module.exports = {
   addPromo: async (obj, { token, promo }, context) => {
-    const payload = verifyAuthToken(token)
+    const payload = await verifyAuthTokenAsync(token)
     // admin only
     if (!payload.a) throw new Error('Not authorized')
     const patch = {
@@ -24,7 +24,7 @@ module.exports = {
     return reducePromo(row)
   },
   updatePromo: async (obj, { token, promoId, promo }, context) => {
-    const payload = verifyAuthToken(token)
+    const payload = await verifyAuthTokenAsync(token)
     // admin only
     if (!payload.a) throw new Error('Not authorized')
     const patch = {
@@ -41,7 +41,7 @@ module.exports = {
     return reducePromo(row)
   },
   removePromo: async (obj, { token, promoId }, context) => {
-    const payload = verifyAuthToken(token)
+    const payload = await verifyAuthTokenAsync(token)
     // admin only
     if (!payload.a) throw new Error('Not authorized')
     await deletePromo(promoId)

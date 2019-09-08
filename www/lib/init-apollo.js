@@ -26,7 +26,7 @@ if (!process.browser) {
 const defaultValidHostRegex = /^[a-zA-Z0-9_\/\-\.]+.now\.sh$/
 
 function create (initialState, req) {
-  console.log('Creating apollo client', { browser: process.browser, initialState, API_URL, })
+  console.log('Creating apollo client', { browser: process.browser, API_URL, })
 
   const cache = new InMemoryCache({
     cacheRedirects: {

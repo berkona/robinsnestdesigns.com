@@ -1,4 +1,4 @@
-const { verifyAuthToken } = require('../../auth')
+const { verifyAuthTokenAsync } = require('../../auth')
 const insertCategory = require('../../db/Category/insertCategory')
 const getCategory = require('../../db/Category/getCategory')
 const updateCategory = require('../../db/Category/updateCategory')
@@ -6,7 +6,7 @@ const reduceCategory = require('../../reducers/reduceCategory')
 
 module.exports = {
   addCategory: async(obj, { token, category }, context) => {
-    const payload = verifyAuthToken(token)
+    const payload = await verifyAuthTokenAsync(token)
     // admin only
     if (!payload.a) throw new Error('Not authorized')
     const [ categoryId ] = await insertCategory(category)
@@ -14,7 +14,7 @@ module.exports = {
     return reduceCategory(row)
   },
   updateCategory: async(obj, { token, categoryId, category }, context) => {
-    const payload = verifyAuthToken(token)
+    const payload = await verifyAuthTokenAsync(token)
     // admin only
     if (!payload.a) throw new Error('Not authorized')
     await updateCategory(categoryId, category)

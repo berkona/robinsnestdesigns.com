@@ -1,10 +1,10 @@
-const { verifyAuthToken } = require('../../auth')
+const { verifyAuthTokenAsync } = require('../../auth')
 const updateUser = require('../../db/User/updateUser')
 const findUserById = require('../../db/User/findUserById')
 const reduceUser = require('../../reducers/reduceUser')
 
 module.exports = async (obj, { token, user }, context) => {
-  const payload = verifyAuthToken(token)
+  const payload = await verifyAuthTokenAsync(token)
   const uid = payload.uid
   await updateUser(uid, {
     FirstName: user.firstName,

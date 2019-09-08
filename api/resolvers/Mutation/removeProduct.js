@@ -1,10 +1,10 @@
-const { verifyAuthToken } = require('../../auth')
+const { verifyAuthTokenAsync } = require('../../auth')
 const getProduct = require('../../db/Product/getProduct')
 const updateProduct = require('../../db/Product/updateProduct')
 const searchEngine = require('../../searchEngine')
 
 module.exports = async (obj, { token, productId }, context) => {
-  const payload = verifyAuthToken(token)
+  const payload = await verifyAuthTokenAsync(token)
   // admin only
   if (!payload.a) throw new Error('Not authorized')
   const [ row ] = await getProduct(productId)

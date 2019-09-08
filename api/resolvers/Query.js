@@ -1,5 +1,5 @@
 const {
-  verifyAuthToken,
+  verifyAuthTokenAsync,
   getUserFromToken,
 } = require('../auth')
 
@@ -35,13 +35,13 @@ module.exports = {
     return user
   },
   wishlist: async (obj, { token }, context) => {
-    const { uid } = verifyAuthToken(token)
+    const { uid } = await verifyAuthTokenAsync(token)
     const wlRows = await getWishList(uid)
     const wishList = reduceWishList(wlRows)
     return wishList
   },
   allPromos: async (obj, { token }, context) => {
-    const payload = verifyAuthToken(token)
+    const payload = await verifyAuthTokenAsync(token)
     // admin only
     if (!payload.a) throw new Error('Not authorized')
     const promos = await listPromos()
@@ -52,5 +52,5 @@ module.exports = {
   },
   relatedProducts: async (obj, { productId }, context) => await relatedProducts(productId),
   topSellingProducts: async (obj, { limit }, context) => await topSellingProducts(null, limit),
-  // isInWishlist: (obj, { token, productId }, context) => context.dataSources.db.isInWishlist(verifyAuthToken(token).uid, productId),
+  // isInWishlist: (obj, { token, productId }, context) => context.dataSources.db.isInWishlist(verifyAuthTokenAsync(token).uid, productId),
 }

@@ -12,6 +12,7 @@ import { initGA, PageView } from '../lib/next-ga-ec'
 import { hotjar } from 'react-hotjar';
 import { ThemeProvider } from '@material-ui/styles'
 import theme from '../constants/theme';
+import RefreshToken from '../components/RefreshToken'
 
 const USER_TOKEN = 'USER_TOKEN'
 const USER_CART = 'CUSTOMERID'
@@ -40,7 +41,8 @@ class MyApp extends App {
     }
     return {
       cookies: Cookies.get(ctx),
-      _innerProps: _innerProps
+      _innerProps: _innerProps,
+      isBrowser: process.browser,
     }
   }
 
@@ -130,6 +132,7 @@ class MyApp extends App {
           <ApolloProvider client={apolloClient}>
             <CurrentUserProvider value={CurrentUser}>
               <PageView>
+                <RefreshToken isBrowser={process.browser}/>
                 <Layout>
                   <Component {...pageProps} {..._innerProps} />
                 </Layout>

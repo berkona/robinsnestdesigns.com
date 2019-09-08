@@ -123,6 +123,8 @@ const typeDefs = gql`
     addPromo(token: String!, promo: PromoInput!): Promo!
     updatePromo(token: String!, promoId: ID!, promo: PromoPatch!): Promo!
     removePromo(token: String!, promoId: ID!): Boolean
+
+    refreshToken(token: String!): AuthPayload!
   }
 
   input CategoryInput {
