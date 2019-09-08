@@ -164,7 +164,7 @@ export default ({
                 </TableRow>
               ))}
               <TableRow>
-                <TableCell rowspan={6} colspan="5" />
+                <TableCell rowSpan={6} colSpan="5" />
                 <TableCell align="right">Subtotal:</TableCell>
                 <TableCell align="right">${subtotal.toFixed(2)}</TableCell>
               </TableRow>
@@ -201,7 +201,7 @@ export default ({
             fullWidth
             value={newPromo}
             onChange={evt => setNewPromo(evt.target.value)}
-            error={promo && discount < 0.01}
+            error={!!(promo && discount < 0.01)}
             helperText={
               promo &&
               discount < 0.01 &&
