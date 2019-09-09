@@ -104,6 +104,9 @@ class MyApp extends App {
           currentUserToken: null,
           currentUserCartId: null,
         })
+        // flag we've already logged out
+        token = null
+        cartId = null
       },
       getCartId: () => {
         return cartId

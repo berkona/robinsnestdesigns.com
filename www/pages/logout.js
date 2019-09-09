@@ -1,24 +1,39 @@
-import React from 'react'
-import Router from 'next/router'
-import { CurrentUserContext } from '../lib/auth'
-import Col from 'react-bootstrap/Col'
-import { PageViewEvent } from '../lib/react-ga'
+import React from "react";
+import Router from "next/router";
+import { CurrentUser } from "../lib/auth";
+import Col from "react-bootstrap/Col";
+import { PageViewEvent } from "../lib/react-ga";
 
-const LogoutPage = () => <><PageViewEvent /><CurrentUserContext.Consumer>
-  {currentUser => {
+const Logout = ({ currentUser }) => {
+  React.useEffect(() => {
     if (process.browser) {
       if (currentUser.isLoggedIn()) {
-        currentUser.logout()
-        Router.push('/')
-        return <Col><p>Logged out.  Redirecting you...</p></Col>
-      } else {
-        Router.push('/')
-        return <Col><p>Not logged in.  Redirecting you...</p></Col>
+        console.log('Logging out user')
+        currentUser.logout();
       }
-    } else {
-      return <Col><p>Wait while we log you out...</p></Col>
+      setTimeout(() => Router.push("/"), 100);
     }
-  }}
-</CurrentUserContext.Consumer></>
+  });
+  return currentUser.isLoggedIn() ? (
+    <Col>
+      <p>Wait while we log you out...</p>
+    </Col>
+  ) : (
+    <Col>
+      <p>Logged out. Redirecting you...</p>
+    </Col>
+  );
+};
 
-export default LogoutPage
+const LogoutPage = () => {
+  return (
+    <>
+      <PageViewEvent />
+      <CurrentUser>
+        {currentUser => <Logout currentUser={currentUser} />}
+      </CurrentUser>
+    </>
+  );
+};
+
+export default LogoutPage;

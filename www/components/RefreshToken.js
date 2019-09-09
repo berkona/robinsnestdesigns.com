@@ -11,15 +11,17 @@ const RefreshTokenQuery = gql`
   }
 `;
 
-class CallMutation extends React.Component {
-  componentDidMount() {
-    console.log("RefreshToken.componentDidMount", this.props);
-    if (typeof this.props.mutation === "function") this.props.mutation();
-  }
-  render() {
-    return null;
-  }
-}
+const CallMutation = ({ mutation }) => {
+  const [called, setCalled] = React.useState(false);
+  React.useEffect(() => {
+    if (!called) {
+      console.log("CallMutation.useEffect", mutation);
+      if (typeof mutation === "function") mutation();
+      setCalled(true);
+    }
+  });
+  return null;
+};
 
 export default ({ isBrowser }) =>
   isBrowser ? (
@@ -30,8 +32,12 @@ export default ({ isBrowser }) =>
             mutation={RefreshTokenQuery}
             variables={{ token: user.getToken() }}
             onCompleted={data => {
-              console.log("RefreshToken.onCompleted", data.refreshToken.token);
-              user.login(data.refreshToken.token);
+              console.log("RefreshToken.onCompleted", {
+                token: data.refreshToken.token,
+                "user.isLoggedIn": user.isLoggedIn()
+              });
+              // handle a race condition in logging out here
+              if (user.isLoggedIn()) user.login(data.refreshToken.token);
             }}
             onError={() => user.logout()}
           >
