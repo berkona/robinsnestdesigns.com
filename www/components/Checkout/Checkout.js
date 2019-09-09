@@ -39,7 +39,7 @@ const QueryOrder = ({ orderId, county, shipping, promo, children }) => (
 
 const OrderWrapper = ({ cartData, children }) => (
   <>
-    {cartData.items.map(cartItem => (
+    {cartData && cartData.items && cartData.items.map(cartItem => (
       <Product
         key={cartItem.id}
         sku={cartItem.product.sku}
