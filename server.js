@@ -44,7 +44,7 @@ nextApp.prepare().then(() => {
 
   // begin auto-generated from scrape-hoffman
   const scrape_hoffman = require('./api/handlers/scrape-hoffman')['main']
-  process.nextTick(scrape_hoffman_schedule___self_custom_stage_)
+  process.nextTick(scrape_hoffman)
   const scrape_hoffman_schedule___self_custom_stage_ = schedule.scheduleJob("1 2 * * *", scrape_hoffman)
   process.on('exit', () => scrape_hoffman_schedule___self_custom_stage_.cancel())
   // end auto-generated code from scrape-hoffman
