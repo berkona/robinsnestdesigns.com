@@ -1,6 +1,7 @@
 
 const express = require('express')
 const next = require('next')
+const schedule = require('node-schedule')
 
 const port = parseInt(process.env.PORT, 10) || 3000
 const dev = process.env.NODE_ENV !== 'production'
@@ -43,8 +44,9 @@ nextApp.prepare().then(() => {
 
   // begin auto-generated from scrape-hoffman
   const scrape_hoffman = require('./api/handlers/scrape-hoffman')['main']
-  const scrape_hoffman_schedule___self_custom_stage_ = setInterval(scrape_hoffman, 86400000)
-  process.on('exit', () => clearInterval(scrape_hoffman_schedule___self_custom_stage_))
+  process.nextTick(scrape_hoffman_schedule___self_custom_stage_)
+  const scrape_hoffman_schedule___self_custom_stage_ = schedule.scheduleJob("1 2 * * *", scrape_hoffman)
+  process.on('exit', () => scrape_hoffman_schedule___self_custom_stage_.cancel())
   // end auto-generated code from scrape-hoffman
 
   // begin auto-generated next-js routes
