@@ -46,8 +46,9 @@ const signin = async (obj, { email, password }, context) => {
   if (password === user.Password) {
     user = reduceUser(user);
     const isAdmin =
-      admin_emails.filter(email => user.email == email).length > 0 || false;
+      admin_emails.filter(email => user.email === email).length > 0 || false;
     const token = await generateAuthTokenAsync(user.id, isAdmin);
+    console.log('Mutation.signin', user, isAdmin, token)
     return {
       token,
       user
@@ -94,9 +95,10 @@ const verifyAuthTokenAsync = token =>
   });
 
 const refreshToken = async (obj, { token }, context) => {
-  const { uid, isAdmin } = await verifyAuthTokenAsync(token);
+  const payload = await verifyAuthTokenAsync(token);
   const user = await getUserFromToken(token);
-  const newToken = await generateAuthTokenAsync(uid, isAdmin);
+  console.log('Mutation.refreshToken', token, payload, user);
+  const newToken = await generateAuthTokenAsync(payload.uid, payload.a);
   return {
     user,
     token: newToken
