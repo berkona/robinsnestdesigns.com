@@ -21,7 +21,7 @@ const PaymentOptionsPage = props => (
         />
       </a>
       <img
-        src="/static/horizontal_solution_PPeCheck.gif"
+        src=src="https://public-images-static-af327.robinsnestdesigns.com/horizontal_solution_PPeCheck.gif"
         width="253"
         height="80"
       />
