@@ -13,14 +13,12 @@ export default () => (
     <p>Compliments of Robin's Nest Designs</p>
     <hr />
     <p>
-      <Link href="rwbabccolormodel" target="_blank">
-        <b>
-          <i>View color model</i>
-        </b>
-      </Link>
+      <img src="/static/rwbabc.jpg" />
     </p>
     <p>
-      <img src="/static/rwbabc.jpg" />
+      <Link href="rwbabccolormodel" target="_blank">
+        <a>View color model</a>
+      </Link>
     </p>
     <p>
       Use the print function on your browser&#39;s window to print out this free
