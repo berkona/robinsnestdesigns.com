@@ -10,7 +10,7 @@ export default () => (
     <p>
       <img src="/static/rwbabcpt5.jpg" />
     </p>
-    <p><Link href="rnorwbabc"><a>Go to Chart Page</a></Link></p>
+    <p><Link href="rnorwbabc" target="_blank"><a>Go to Chart Page</a></Link></p>
     <p>Use this alphabet to spell out:</p>
     <ul>
       <li>GOD BLESS AMERICA</li>
