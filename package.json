@@ -6,7 +6,7 @@
   "scripts": {
     "build": "node node_modules/next/dist/bin/next build www/",
     "dev": "node server.js",
-    "start": "npm rebuild && NODE_ENV=production node server.js"
+    "start": "(curl https://intoli.com/install-google-chrome.sh | bash) && NODE_ENV=production node server.js"
   },
   "author": "Jon \"berkona\" Monroe",
   "license": "ISC",
