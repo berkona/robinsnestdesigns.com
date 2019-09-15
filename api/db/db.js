@@ -138,18 +138,31 @@ const finalize = async () => {
 	let maxConns = await getMaxConnections()
 	// Check the number of used connections
 	let usedConns = await getTotalConnections()
+
+	console.log('db.finalize', 'enter', {
+		usedConns,
+		maxConns,
+		ZOMBIE_TIMEOUT_MIN,
+		ZOMBIE_TIMEOUT_MAX,
+		CONNS_UTIL_MAX,
+		CONNS_FREQ_MAX,
+		CONNS_FREQ_USED,
+	})
+
 	// If over utilization threshold, try and clean up zombies
 	if (usedConns.total / maxConns.total > CONNS_UTIL_MAX) {
 		// Calculate the zombie timeout
 		let timeout = Math.min(Math.max(usedConns.maxAge, ZOMBIE_TIMEOUT_MIN), ZOMBIE_TIMEOUT_MAX)
 		// Kill zombies if they are within the timeout
 		let killedZombies = timeout <= usedConns.maxAge ? await killZombieConnections(timeout) : 0
+		console.log('db.finalize', 'over utilization threshold', 'killedZombies', killedZombies)
 		// If no zombies were cleaned up, close this connection
 		if (killedZombies === 0) {
 			await quit()
 		}
 		// If zombies exist that are more than the max timeout, kill them
 	} else if (usedConns.maxAge > ZOMBIE_TIMEOUT_MAX) {
+		console.log('db.finalize', 'max timeout zombies', 'killedZombies', killedZombies)
 		await killZombieConnections(ZOMBIE_TIMEOUT_MAX)
 	}
 }
