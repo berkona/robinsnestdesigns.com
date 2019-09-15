@@ -3,6 +3,14 @@ const { knex, withDB, readDB } = require('../db')
 
 const redirectUrls = [
   {
+    src: /\/About\/About\.cfm/,
+    dest: () => "/About/About"
+  },
+  {
+    src: /\/About\/Contact\.cfm/,
+    dest: () => "/About/Contact"
+  },
+  {
     src: /\/design%20studio\/robin's%20nest%20originals\/rwbabccolormodel\..+/i,
     dest: () => "/design-studio/rwbabccolormodel"
   },
@@ -13,6 +21,14 @@ const redirectUrls = [
   {
     src: /\/ShippingInfo\/shippingratesnew\.cfm/,
     dest: () => "/ShippingInfo/shippingratesnew"
+  },
+  {
+    src: /\/ShoppingInfo\/how2order\.cfm/,
+    dest: () => "/ShoppingInfo/how2order"
+  },
+  {
+    src: /\/ShoppingInfo\/paymentOptions\.cfm/,
+    dest: () => "/ShoppingInfo/paymentOptions"
   },
   {
     src: /\/on_sale\.cfm/,

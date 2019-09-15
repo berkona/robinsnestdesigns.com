@@ -2,13 +2,14 @@ import React from "react";
 import Router from "next/router";
 import { CurrentUser } from "../lib/auth";
 import Col from "react-bootstrap/Col";
-import { PageViewEvent } from "../lib/react-ga";
+import ContentWithSidebar from "../components/ContentWithSidebar";
+import SEO from "../components/ContentWithSidebar";
 
 const Logout = ({ currentUser }) => {
   React.useEffect(() => {
     if (process.browser) {
       if (currentUser.isLoggedIn()) {
-        console.log('Logging out user')
+        console.log("Logging out user");
         currentUser.logout();
       }
       setTimeout(() => Router.push("/"), 100);
@@ -27,12 +28,15 @@ const Logout = ({ currentUser }) => {
 
 const LogoutPage = () => {
   return (
-    <>
-      <PageViewEvent />
+    <ContentWithSidebar>
+      <SEO
+        title="Log out page | Robin's Nest Designs"
+        description="Log out right now"
+      />
       <CurrentUser>
         {currentUser => <Logout currentUser={currentUser} />}
       </CurrentUser>
-    </>
+    </ContentWithSidebar>
   );
 };
 
