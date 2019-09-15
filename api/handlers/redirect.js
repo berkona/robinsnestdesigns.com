@@ -3,6 +3,10 @@ const { knex, withDB, readDB } = require('../db')
 
 const redirectUrls = [
   {
+    src: /\/design%20studio\/robin's%20nest%20originals\/rwbabccolormodel\..+/i,
+    dest: () => "/design-studio/rwbabccolormodel"
+  },
+  {
     src: /\/ShippingInfo\/shipping\.cfm/,
     dest: () => "/ShippingInfo/shipping"
   },

@@ -21,6 +21,8 @@ nextApp.prepare().then(() => {
   expressApp.get('/sitemap.xml', sitemap)
 
   const redirect = require('./api/handlers/redirect').handler
+  expressApp.get(encodeURI('/Design Studio/Robin\'s Nest Originals/rwbabccolormodel.htm'), redirect)
+  expressApp.get(encodeURI('/Design Studio/Robin\'s Nest Originals/rwbabccolormodel.cfm'), redirect)
   expressApp.get('/ShippingInfo/shipping.cfm', redirect)
   expressApp.get('/ShippingInfo/shippingratesnew.cfm', redirect)
   expressApp.get('/on_sale.cfm', redirect)
