@@ -43,6 +43,9 @@ nextApp.prepare().then(() => {
   expressApp.get("/category_results.cfm", redirect);
   expressApp.get("/results.cfm", redirect);
   expressApp.get("/detail.cfm", redirect);
+  expressApp.get("*.cfm", redirect);
+  expressApp.get("*.htm", redirect);
+  expressApp.get("*.html", redirect);
 
   const robots_txt = require("./api/handlers/robots").handler;
   expressApp.get("/robots.txt", robots_txt);
