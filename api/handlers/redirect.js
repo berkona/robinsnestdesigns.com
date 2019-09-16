@@ -15,6 +15,10 @@ const redirectUrls = [
     dest: () => "/design-studio/rwbabccolormodel"
   },
   {
+    src: /\/design%20studio\/robin%27s%20nest%20originals\/rwbabccolormodel\..+/i,
+    dest: () => "/design-studio/rwbabccolormodel"
+  },
+  {
     src: /\/ShippingInfo\/shipping\.cfm/,
     dest: () => "/ShippingInfo/shipping"
   },
