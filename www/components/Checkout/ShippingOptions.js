@@ -34,8 +34,8 @@ export default ({ shippingAddress, value, setValue }) => {
       label="Free Shipping Over $75"
     />
   </> : <>
-    <FormControlLabel value="10.99" control={<Radio />} label="First Class (International): $10.99" />
-    <FormControlLabel value="25.99" control={<Radio />} label="Priority (International): $25.99" />
+    <FormControlLabel value="14.99" control={<Radio />} label="First Class (International): $14.99" />
+    <FormControlLabel value="34.99" control={<Radio />} label="Priority (International): $34.99" />
   </>
 
   return <>
