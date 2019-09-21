@@ -3,7 +3,7 @@ const { knex, readDB } = require('../db')
 const reduceProduct = require('../../reducers/reduceProduct')
 
 module.exports = async (after, limit) => {
-  after = after || Date.now() - 30 * 24 * 60 * 60 * 1000
+  after = after || Date.now() - 60 * 24 * 60 * 60 * 1000
   limit = limit || 8
 
   const query = knex
