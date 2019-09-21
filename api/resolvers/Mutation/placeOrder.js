@@ -105,6 +105,7 @@ module.exports = async (obj, { orderId, paypalOrderId, shipping, county, promo }
     CustomerId: orderId,
     OrderPlaced: 1,
     OrderFilled: 0,
+    Date: new Date(),
     FirstName: sFirstName,
     LastName: sLastName,
     Phone: phone,

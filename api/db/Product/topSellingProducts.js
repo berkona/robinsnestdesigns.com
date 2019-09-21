@@ -10,10 +10,11 @@ module.exports = async (after, limit) => {
     .select(productFields)
     .from(
       knex
-        .select('ItemID')
-        .sum('Quantity as totalSold')
-        .from('Cart')
-        .where('Date', '>', new Date(after).toISOString())
+        .select('Cart.ItemID')
+        .sum('Cart.Quantity as totalSold')
+        .from('CustomerInfo')
+        .innerJoin('Cart')
+        .where('CustomerInfo.Date', '>', new Date(after).toISOString())
         .groupBy('ItemID')
         .as('t1')
     )
