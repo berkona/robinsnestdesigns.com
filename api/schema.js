@@ -1,10 +1,10 @@
-const { gql } = require('./apollo-server')
-const resolvers = require('./resolvers')
+const { gql } = require("./apollo-server");
+const resolvers = require("./resolvers");
 // const { makeExecutableSchema } = require('graphql-tools')
 
 // in seconds
-const ONE_DAY = 60 * 60 * 24
-const FIVE_MIN = 60 * 5
+const ONE_DAY = 60 * 60 * 24;
+const FIVE_MIN = 60 * 5;
 
 // Construct a schema, using GraphQL schema language
 const typeDefs = gql`
@@ -315,6 +315,7 @@ const typeDefs = gql`
     category3: ID
     subcategory3: ID
     keywords: String!
+    isActive: Boolean!
   }
 
   type ProductVariant @cacheControl(maxAge: ${FIVE_MIN}) {
@@ -323,9 +324,9 @@ const typeDefs = gql`
     text: String!
   }
 
-`
+`;
 
 module.exports = {
   typeDefs,
-  resolvers,
-}
+  resolvers
+};

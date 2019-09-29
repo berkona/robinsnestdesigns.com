@@ -1,26 +1,30 @@
 function reduceProduct(row) {
-  if (!row) return null
+  if (!row) return null;
 
-  const productVariants = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ].reduce((arr, nVariant) => {
-    const priceField = 'Price' + nVariant
-    const optionField = 'Option' + nVariant
-    const id = Number.parseInt(('' + row.ProductID) + '' + (nVariant-1))
-    if (row[priceField]) {
-      arr.push({
-        id,
-        price: Number.parseFloat(row[priceField]),
-        text: row[optionField] || "",
-      })
-    }
-    return arr
-  }, [])
+  const productVariants = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].reduce(
+    (arr, nVariant) => {
+      const priceField = "Price" + nVariant;
+      const optionField = "Option" + nVariant;
+      const id = Number.parseInt("" + row.ProductID + "" + (nVariant - 1));
+      if (row[priceField]) {
+        arr.push({
+          id,
+          price: Number.parseFloat(row[priceField]),
+          text: row[optionField] || ""
+        });
+      }
+      return arr;
+    },
+    []
+  );
 
   return {
     id: row.ProductID,
+    isActive: row.Active || false,
     sku: row.ItemID,
     qtyInStock: row.Qty || 0,
     name: row.ItemName,
-    price: row.ItemPrice || 0.00,
+    price: row.ItemPrice || 0.0,
     clearance: !!row.Clearance,
     salePrice: row.SalePrice,
     saleStart: row.Sale_Start,
@@ -37,9 +41,9 @@ function reduceProduct(row) {
     subcategory2: row.SubCategoryB,
     subcategory3: row.SubCategoryC,
     hyperlinkedImage: row.hyperlinkedImage,
-    keywords: row.Keywords || '',
-    productVariants,
-  }
+    keywords: row.Keywords || "",
+    productVariants
+  };
 }
 
-module.exports = reduceProduct
+module.exports = reduceProduct;
