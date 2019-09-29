@@ -12,6 +12,7 @@ const getWishList = require('../db/WishList/getWishList')
 const listPromos = require('../db/Promotions/listPromos')
 const relatedProducts = require('../db/Product/relatedProducts')
 const topSellingProducts = require('../db/Product/topSellingProducts')
+const inStockProducts = require('../db/Product/inStockProducts')
 
 const reduceProduct = require('../reducers/reduceProduct')
 const reduceWishList = require('../reducers/reduceWishList')
@@ -52,5 +53,6 @@ module.exports = {
   },
   relatedProducts: async (obj, { productId }, context) => await relatedProducts(productId),
   topSellingProducts: async (obj, { limit }, context) => await topSellingProducts(null, limit),
+  inStockProducts: async (obj, { limit }, context) => await inStockProducts(limit),
   // isInWishlist: (obj, { token, productId }, context) => context.dataSources.db.isInWishlist(verifyAuthTokenAsync(token).uid, productId),
 }
