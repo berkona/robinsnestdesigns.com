@@ -111,7 +111,7 @@ const ProductDetail = props => (
       const shippingTime =
         data.product.qtyInStock > 0
           ? "Ships in 1-2 business days"
-          : "Ships in 1-2 weeks";
+          : "Order by Tuesday to ship Saturday";
       return (
         <div className="product-detail">
           <style jsx>{`
