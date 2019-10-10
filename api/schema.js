@@ -26,6 +26,7 @@ const typeDefs = gql`
       skip: Int,
       limit: Int,
       sort: ProductSortType
+      inStockOnly: Boolean,
     ): ProductList! @cacheControl(maxAge: ${FIVE_MIN})
 
     similarKeywords(keyword: String!): [String!]! @cacheControl(maxAge: ${FIVE_MIN})
@@ -295,6 +296,7 @@ const typeDefs = gql`
     sku: String!
     name: String!
     price: Float!
+    isInStock: Boolean!
     qtyInStock: Int!
     clearance: Boolean!
     isOnSale: Boolean!

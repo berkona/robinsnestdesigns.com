@@ -22,6 +22,7 @@ function reduceProduct(row) {
     id: row.ProductID,
     isActive: row.Active || false,
     sku: row.ItemID,
+    isInStock: row.Qty && row.Qty > 0,
     qtyInStock: row.Qty || 0,
     name: row.ItemName,
     price: row.ItemPrice || 0.0,
