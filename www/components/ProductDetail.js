@@ -109,9 +109,7 @@ const ProductDetail = props => (
           parseDate(data.product.saleEnd)
         );
       const shippingTime =
-        data.product.qtyInStock > 0
-          ? "Ships in 1-2 business days"
-          : "Order by Tuesday to ship Saturday";
+        data.product.qtyInStock > 0 ? "Ships in 1-2 business days" : null;
       return (
         <div className="product-detail">
           <style jsx>{`
