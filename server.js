@@ -9,6 +9,13 @@ const nextApp = next({
   dev
 });
 
+const queryFromReq = req => {
+  return {
+    ...req.params,
+    ...req.query
+  };
+};
+
 const handle = nextApp.getRequestHandler();
 nextApp.prepare().then(() => {
   const expressApp = express();
@@ -77,62 +84,72 @@ nextApp.prepare().then(() => {
 
   // begin auto-generated next-js routes
   expressApp.get("/", (req, res) => {
-    return nextApp.render(req, res, "/", req.params);
+    return nextApp.render(req, res, "/", queryFromReq(req));
   });
 
   expressApp.get("/categories", (req, res) => {
-    return nextApp.render(req, res, "/categories", req.params);
+    return nextApp.render(req, res, "/categories", queryFromReq(req));
   });
 
   expressApp.get("/category/:categoryId", (req, res) => {
-    return nextApp.render(req, res, "/category", req.params);
+    return nextApp.render(req, res, "/category", queryFromReq(req));
   });
 
   expressApp.get("/order/:orderId", (req, res) => {
-    return nextApp.render(req, res, "/order", req.params);
+    return nextApp.render(req, res, "/order", queryFromReq(req));
   });
 
   expressApp.get("/product/:productId", (req, res) => {
-    return nextApp.render(req, res, "/product", req.params);
+    return nextApp.render(req, res, "/product", queryFromReq(req));
   });
 
   expressApp.get("/product/:productId/:catSlug/:cat2Slug/:slug", (req, res) => {
-    return nextApp.render(req, res, "/product", req.params);
+    return nextApp.render(req, res, "/product", queryFromReq(req));
   });
 
   expressApp.get(
     "/search/c/:categoryId/sc/:subcategoryId/p/:pageNo",
     (req, res) => {
-      return nextApp.render(req, res, "/search", req.params);
+      return nextApp.render(req, res, "/search", queryFromReq(req));
     }
   );
 
   expressApp.get("/search/c/:categoryId/sc/:subcategoryId", (req, res) => {
-    return nextApp.render(req, res, "/search", req.params);
+    return nextApp.render(req, res, "/search", queryFromReq(req));
   });
 
   expressApp.get("/search/c/:categoryId/p/:pageNo", (req, res) => {
-    return nextApp.render(req, res, "/search", req.params);
+    return nextApp.render(req, res, "/search", queryFromReq(req));
   });
 
   expressApp.get("/search/c/:categoryId", (req, res) => {
-    return nextApp.render(req, res, "/search", req.params);
+    return nextApp.render(req, res, "/search", queryFromReq(req));
   });
 
   expressApp.get("/search/p/:pageNo", (req, res) => {
-    return nextApp.render(req, res, "/search", req.params);
+    return nextApp.render(req, res, "/search", queryFromReq(req));
   });
 
   expressApp.get("/search", (req, res) => {
-    return nextApp.render(req, res, "/search", req.params);
+    return nextApp.render(req, res, "/search", queryFromReq(req));
   });
 
   expressApp.get("/admin/product-details/:productId", (req, res) => {
-    return nextApp.render(req, res, "/admin/product-details", req.params);
+    return nextApp.render(
+      req,
+      res,
+      "/admin/product-details",
+      queryFromReq(req)
+    );
   });
 
   expressApp.get("/admin/category-details/:categoryId", (req, res) => {
-    return nextApp.render(req, res, "/admin/category-details", req.params);
+    return nextApp.render(
+      req,
+      res,
+      "/admin/category-details",
+      queryFromReq(req)
+    );
   });
 
   // end auto-generated next-js routes
