@@ -1,4 +1,5 @@
 import featurednew from "./featurednew.html"
+import covid from "./covid.html"
 import featured from "./featured.html"
 import announcements from "./announcements.html"
 import prairieSchooler from "./prairie-schooler.html"
