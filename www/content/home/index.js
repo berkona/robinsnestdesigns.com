@@ -7,6 +7,7 @@ import sales from "./sales.html"
 
 export default [
   featurednew,
+  covid,
   featured,
   announcements,
   prairieSchooler,
