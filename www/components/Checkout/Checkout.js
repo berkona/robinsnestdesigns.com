@@ -80,7 +80,7 @@ export default ({ orderId }) => {
     county: null
   });
 
-  const [shippingType, setShippingType] = React.useState("4.99");
+  const [shippingType, setShippingType] = React.useState("5.99");
 
   const [promo, setPromo] = React.useState("");
 
