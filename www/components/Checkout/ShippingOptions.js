@@ -21,12 +21,12 @@ export default ({ shippingAddress, value, setValue }) => {
   const classes = useStyles()
   const isDomestic = shippingAddress.country == 'US'
   if (!value) {
-    setValue(isDomestic ? '3.99' : '7.99')
+    setValue(isDomestic ? '4.99' : '8.99')
   }
   // TODO: re-implement free shipping
   const options = isDomestic ? <>
-    <FormControlLabel value="3.99" control={<Radio />} label="First Class: $3.99" />
-    <FormControlLabel value="7.99" control={<Radio />} label="Priority: $7.99" />
+    <FormControlLabel value="4.99" control={<Radio />} label="First Class: $4.99" />
+    <FormControlLabel value="8.99" control={<Radio />} label="Priority: $8.99" />
     <FormControlLabel
       value="0.00"
       disabled
@@ -34,8 +34,8 @@ export default ({ shippingAddress, value, setValue }) => {
       label="Free Shipping Over $75"
     />
   </> : <>
-    <FormControlLabel value="14.99" control={<Radio />} label="First Class (International): $14.99" />
-    <FormControlLabel value="34.99" control={<Radio />} label="Priority (International): $34.99" />
+    <FormControlLabel value="16.99" control={<Radio />} label="First Class (International): $16.99" />
+    <FormControlLabel value="36.99" control={<Radio />} label="Priority (International): $36.99" />
   </>
 
   return <>
