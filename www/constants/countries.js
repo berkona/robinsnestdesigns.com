@@ -17,6 +17,5 @@ const countries = [
   { name: "Sweden", value: 'SE' },
   { name: "Switzerland", value: 'CH' },
   { name: "The Netherlands", value: 'NL' },
-  { name: "Taiwan", value: 'TW' },
-]
+ ]
 export default countries
