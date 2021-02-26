@@ -367,14 +367,12 @@ const ShippingInfoPage = props => (
       details on how your order will be filled.{" "}
     </p>
 
-    <p />
-    <h2>
+    <h2>
       <a name="international" id="international" />International
     </h2>
     <p>We are not currently shipping outside the USA and Canada due to the pandemic.
     </p>
     
-    <p />
     <h2>
       <a name="processing" />
       Order Processing{" "}
