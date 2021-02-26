@@ -37,11 +37,11 @@ const ShippingInfoPage = props => (
             </font>
           </th>
           <th valign="TOP" width="200">
-            <font size="-1">The S&amp;H rate for First Class Mail is... </font>
+            <font size="-1">The S&amp;H rate for Insured First Class Mail is... </font>
           </th>
           <th height="38" valign="TOP" width="200">
             &nbsp;
-            <font size="-1">The S&amp;H rate for Priority Mail is... </font>
+            <font size="-1">The S&amp;H rate for Insured Priority Mail is... </font>
           </th>
         </tr>
         <tr>
@@ -53,7 +53,7 @@ const ShippingInfoPage = props => (
           </td>
           <td align="CENTER" valign="TOP" width="200">
             <font color="#000000" size="-1">
-              &nbsp;$3.99
+              &nbsp;$5.99
             </font>
           </td>
           <td align="CENTER" height="23" valign="TOP" width="200">
@@ -96,7 +96,7 @@ const ShippingInfoPage = props => (
     </p>
     <p>
       The order amount used to determine shipping includes any discounts (e.g.
-      $70 of merchandise with a 10% discount does not qualify for free
+      $75 of merchandise with a 15% discount does not qualify for free
       shipping). Also, there are some <a href="#restrictions">restrictions</a>{" "}
       on free shipping.
     </p>
@@ -128,7 +128,7 @@ const ShippingInfoPage = props => (
         All orders to Canada are shipped through US Postal Service.
       </font>
     </p>
-    <p>You may select First Class International for orders up to $75 only.</p>
+    <p>You may select Insured First Class International for orders up to $75 only.</p>
     <p>
       Shipping rates
       <font color="#000000">:</font>
@@ -150,7 +150,7 @@ const ShippingInfoPage = props => (
             <font size="-1">
               The S&amp;H rate is...
               <br />
-              &nbsp;(First Class International)
+              &nbsp;(Insured First Class International)
             </font>
           </th>
           <th height="38" valign="TOP" width="200">
@@ -159,7 +159,7 @@ const ShippingInfoPage = props => (
             <font size="-1">
               The S&amp;H rate is...
               <br />
-              &nbsp;(Priority Mail International)
+              &nbsp;(Insured Priority Mail International)
             </font>
           </th>
         </tr>
@@ -172,12 +172,12 @@ const ShippingInfoPage = props => (
           </td>
           <td align="CENTER" width="200">
             <font color="#000000" size="-1">
-              $10.99
+              $16.99
             </font>
           </td>
           <td align="CENTER" height="23" width="200">
             <font color="#000000" size="-1">
-              &nbsp;$25.99
+              &nbsp;$36.99
             </font>
           </td>
         </tr>
@@ -194,7 +194,7 @@ const ShippingInfoPage = props => (
           <td align="CENTER" height="23" width="200">
             &nbsp;
             <font color="#000000" size="-1">
-              $30.99
+              $36.99
             </font>
           </td>
         </tr>
@@ -213,7 +213,7 @@ const ShippingInfoPage = props => (
               {" "}
               &nbsp;
               <font color="#000000" size="-1">
-                $35.99
+                Inquire
               </font>
             </font>
           </td>
@@ -250,7 +250,7 @@ const ShippingInfoPage = props => (
           <td width="200" height="23" align="CENTER">
             &nbsp;
             <font color="#000000" size="-1">
-              $45.99
+              Inquire
             </font>
           </td>
         </tr>
@@ -267,7 +267,7 @@ const ShippingInfoPage = props => (
           <td width="200" height="23" align="CENTER">
             &nbsp;
             <font color="#000000" size="-1">
-              $50.99
+              Inquire
             </font>
           </td>
         </tr>
@@ -284,7 +284,7 @@ const ShippingInfoPage = props => (
           <td width="200" height="23" align="CENTER">
             &nbsp;
             <font color="#000000" size="-1">
-              $55.99
+              Inquire
             </font>
           </td>
         </tr>
@@ -303,7 +303,7 @@ const ShippingInfoPage = props => (
               {" "}
               &nbsp;
               <font color="#000000" size="-1">
-                $60.99
+                Inquire
               </font>
             </font>
           </td>
@@ -321,7 +321,7 @@ const ShippingInfoPage = props => (
           <td width="200" height="23" align="CENTER">
             &nbsp;
             <font color="#000000" size="-1">
-              $65.99
+              Inquire
             </font>
           </td>
         </tr>
@@ -338,7 +338,7 @@ const ShippingInfoPage = props => (
           <td width="200" height="23" align="CENTER">
             &nbsp;
             <font color="#000000" size="-1">
-              $70.99
+              Inquire
             </font>
           </td>
         </tr>
@@ -355,7 +355,7 @@ const ShippingInfoPage = props => (
           <td width="200" height="23" align="CENTER">
             &nbsp;
             <font color="#000000" size="-1">
-              $100.99
+              Inquire
             </font>
           </td>
         </tr>
@@ -366,115 +366,16 @@ const ShippingInfoPage = props => (
       See the <a href="#processing">Order Processing</a> section below for
       details on how your order will be filled.{" "}
     </p>
+
     <p />
-    <h2>
-      <a name="international" id="international" />
-      International
-    </h2>
-    <p>
-      Countries we routinely ship to are listed below. Click on the country's
-      name to see the shipping and handling rates.
-    </p>
-    <blockquote>
-      <p>
-        <a href="shippingratesnew#pacific%20rim">
-          <b>Australia</b>
-        </a>
-        <br />
-        <b>
-          <a href="shippingratesnew#europe">Austria</a>
-          <br />
-          <a href="shippingratesnew#europe">Belgium</a>
-        </b>
-        <br />
-        <b>
-          <a href="shippingratesnew#canada">
-            Canada
-            <br />
-          </a>
-          <a href="shippingratesnew#europe">Denmark</a>
-          <a href="shippingratesnew#canada">
-            {" "}
-            <br />
-          </a>
-          <a href="shippingratesnew#europe">Finland</a>{" "}
-        </b>
-        <br />
-        <b>
-          <a href="shippingratesnew#europe">France</a>
-        </b>
-        <br />
-        <b>
-          <a href="shippingratesnew#europe">Germany</a>
-        </b>
-        <br />
-        <b>
-          <a href="shippingratesnew#pacific%20rim">
-            Japan
-            <br />
-          </a>
-          <a href="shippingratesnew#europe">Luxembourg</a>
-        </b>
-        <br />
-        <b>
-          <a href="shippingratesnew#europe">Netherlands</a>
-        </b>
-        <br />
-        <b>
-          <a href="shippingratesnew#pacific%20rim">New Zealand</a>
-        </b>
-        <br />
-        <b>
-          <a href="shippingratesnew#europe">Norway</a>
-        </b>
-        <br />
-        <b>
-          <a href="shippingratesnew#europe">Sweden</a>
-        </b>
-        <br />
-        <b>
-          <a href="shippingratesnew#europe">Switzerland</a>
-        </b>
-        <br />
-        <b>
-          <a href="shippingratesnew#pacific%20rim">Taiwan</a>
-        </b>
-        <br />
-        <b>
-          <a href="shippingratesnew#europe">United Kingdom</a>
-        </b>
-      </p>
-    </blockquote>
-    <p>
-      <i>
-        <font color="#ff0000">
-          We do not ship to Mexico, Nigeria, Columbia, Italy, Spain, or the
-          Middle East due to past problems.
-        </font>
-      </i>{" "}
-      We may ship to other countries depending on the circumstances. If your
-      country is not listed, please{" "}
-      <a href="mailto:robin@robinsnestdesigns.com">contact us</a>.
-    </p>
-    <p>
-      Note that while most country's postal systems are good and rarely lose
-      packages, it does happen occasionally. We will work with you to find lost
-      packages but reserve the right not to reship items that are not received.
-    </p>
-    <p>
-      See the <a href="#processing">Order Processing</a> section below for
-      details on how your order will be filled.{" "}
-    </p>
-    <p>
-      Please note this policy from DMC: DMC embroidery floss is available for
-      sale and purchase only outside the{" "}
-      <a href="http://www.eurunion.org/states/home.htm">European Union</a> and
-      cannot be purchased, sold, or shipped to{" "}
-      <a href="http://www.eurunion.org/states/home.htm">
-        European Union countries
-      </a>
-      .
-    </p>
+    <h2>
+      <a name="international" id="international" />
+      International
+    </h2>
+    <p>
+      We are not currently shipping outside the USA and Canada due to the pandemic.
+    </p>
+    
     <p />
     <h2>
       <a name="processing" />
