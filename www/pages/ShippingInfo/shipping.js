@@ -194,7 +194,7 @@ const ShippingInfoPage = props => (
           <td align="CENTER" height="23" width="200">
             &nbsp;
             <font color="#000000" size="-1">
-              $36.99
+              Inquire
             </font>
           </td>
         </tr>
@@ -233,7 +233,7 @@ const ShippingInfoPage = props => (
           <td width="200" height="23" align="CENTER">
             &nbsp;
             <font color="#000000" size="-1">
-              $40.99
+              Inquire
             </font>
           </td>
         </tr>
@@ -369,11 +369,9 @@ const ShippingInfoPage = props => (
 
     <p />
     <h2>
-      <a name="international" id="international" />
-      International
+      <a name="international" id="international" />International
     </h2>
-    <p>
-      We are not currently shipping outside the USA and Canada due to the pandemic.
+    <p>We are not currently shipping outside the USA and Canada due to the pandemic.
     </p>
     
     <p />
