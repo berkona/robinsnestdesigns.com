@@ -43,7 +43,7 @@ mutation($token: String!, $productData: ProductInsertInput!) {
 export default withRouter((props) => <Col><div style={{ padding: '24px'}}>
   <h1>Create Product</h1>
   <hr />
-  <Query query={PRODUCT_GET_ONE} variables={{ productId: props.router.query.productId }}>
+  <Query query={PRODUCT_GET_ONE} variables={{ productId: props.router.query.productId }} skip={!props.router.query.productId}>
     {({ loading, error, data }) => {
       if (loading) return <Loader />
       data = data || {}
