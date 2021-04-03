@@ -64,7 +64,7 @@ const Index = (props) => (
           <Col xs={12}>
             <h2>A Sampling of New Items</h2>
             <p className="intro">
-              Over {<TotalNew />} items have been added recently! Most are on sale for 30 days after being added
+              Over {<TotalNew />} items have been added recently!
             </p>
             <p className="intro">
               <SearchLink newOnly={true} sortOrder="mostRecent">
