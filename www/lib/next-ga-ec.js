@@ -9,7 +9,7 @@ export function initGA(code) {
   if (process.browser && window && !window.GA_INITIALIZED && code) {
     console.log('initGA', code)
     ReactGA.initialize(code);
-    ReactGA.plugin.require('ec');
+    // ReactGA.plugin.require('ec');
   }
 }
 
