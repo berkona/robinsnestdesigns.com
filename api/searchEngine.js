@@ -1,5 +1,5 @@
 const knex = require('./knex')
-const SearchEngine = require('./SearchEngine')
+const SearchEngine = require('./lib/SearchEngine')
 
 const searchEngine = new SearchEngine({
   knex,
