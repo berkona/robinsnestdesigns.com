@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactGA from "react-ga";
+import ReactGA from "react-ga4";
 
 const IS_BROWSER = typeof window !== "undefined";
 
@@ -24,7 +24,7 @@ function pageviewSignalDone() {
 export function pageview() {
   setTimeout(() => {
     console.log('ReactGA.pageview')
-    ReactGA.pageview(window.location.pathname + window.location.search);
+    // ReactGA.pageview(window.location.pathname + window.location.search);
   }, 10);
 }
 

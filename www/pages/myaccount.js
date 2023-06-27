@@ -1,15 +1,15 @@
-import React from "react";
-import Col from "react-bootstrap/Col";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
 import { Mutation, Query } from "react-apollo";
-import gql from "graphql-tag";
-import { CurrentUserContext } from "../lib/auth";
-import Loader from "../components/Loader";
-import { FaSpinner } from "react-icons/fa";
-import Link from "next/link";
-import { PageViewEvent } from "../lib/react-ga";
+
 import AddressForm from "../components/Checkout/AddressForm";
+import Button from "react-bootstrap/Button";
+import Col from "react-bootstrap/Col";
+import { CurrentUserContext } from "../lib/auth";
+import { FaSpinner } from "react-icons/fa";
+import Form from "react-bootstrap/Form";
+import Link from "next/link";
+import Loader from "../components/Loader";
+import React from "react";
+import gql from "graphql-tag";
 
 const USER_QUERY = gql`
   query($token: String!) {

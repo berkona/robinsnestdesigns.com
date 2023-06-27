@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactGA from 'react-ga'
+import ReactGA from 'react-ga4'
 import Router from 'next/router'
 
 /**
@@ -95,7 +95,7 @@ export class PageView extends React.Component {
       clearTimeout(PageView.__sendDebounceTimeout)
     PageView.__sendDebounceTimeout = setTimeout(() => {
       console.log('PageView.sendPageview', window.location.pathname + window.location.search)
-      ReactGA.pageview(window.location.pathname + window.location.search)
+      // ReactGA.pageview(window.location.pathname + window.location.search)
       PageView.__sendDebounceTimeout = undefined
     }, SEND_PAGE_VIEW_DEBOUNCE_DELAY)
   }

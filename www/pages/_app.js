@@ -1,18 +1,18 @@
 import App, { Container } from 'next/app'
-import React from 'react'
-import withApolloClient from '../lib/with-apollo-client'
+import { PageView, initGA } from '../lib/next-ga-ec'
+
 import { ApolloProvider } from 'react-apollo'
-import Layout from '../components/Layout'
-import NProgress from 'nprogress'
-import Router from 'next/router'
 import Cookies from 'nookies'
 import { CurrentUserProvider } from '../lib/auth'
-// import { initGA } from '../lib/react-ga'
-import { initGA, PageView } from '../lib/next-ga-ec'
-import { hotjar } from 'react-hotjar';
-import { ThemeProvider } from '@material-ui/styles'
-import theme from '../constants/theme';
+import Layout from '../components/Layout'
+import NProgress from 'nprogress'
+import React from 'react'
 import RefreshToken from '../components/RefreshToken'
+import Router from 'next/router'
+import { ThemeProvider } from '@material-ui/styles'
+import { hotjar } from 'react-hotjar';
+import theme from '../constants/theme';
+import withApolloClient from '../lib/with-apollo-client'
 
 const USER_TOKEN = 'USER_TOKEN'
 const USER_CART = 'CUSTOMERID'
@@ -53,7 +53,7 @@ class MyApp extends App {
       currentUserToken: cookies && cookies[USER_TOKEN],
       currentUserCartId: cookies && cookies[USER_CART],
     }
-    initGA("UA-4561227-5")
+    initGA("G-GKM4ECF4GE")
     if (process.browser) {
       hotjar.initialize(1409743, 6)
     }
