@@ -39,14 +39,13 @@ const PoliciesPage = props => (
       <a href="mailto:%20robin@robinsnestdesigns.com">
         robin@robinsnestdesigns.com
       </a>
-      ) or phone (919-471-6576),{" "}
+      ) {" "}
       <strong>or your return will not be accepted.</strong>
     </p>
     <p>
       <a href="mailto:%20robin@robinsnestdesigns.com">Click here</a> to request
-      an RMA by email or call 919-471-6576. Please leave a message that you
-      would like an RMA and give your order number and someone will either
-      return your call or email you the information.
+      an RMA by email. Please include in your email that you
+      would like an RMA and give your order number and someone will email you the information.
     </p>
     <p>
       Your authorized return must be packaged in a manner that prevents damage
