@@ -125,7 +125,7 @@ class AddToCart extends React.Component {
             if (error) return <p>Network error: {error.toString()}</p>
 
             const product = data.product
-            const maxQuantity = product.qtyInStock || 25
+            const maxQuantity = product.qtyInStock || 5
             const price = getProductPrice(product, this.state.variant || product.productVariants.length > 0 && product.productVariants.map(x => x.id)[0])
 
             const cartForm = (changeText, defaultQty, defaultVariant) => (mutationFn, { loading, error, data }) => {
