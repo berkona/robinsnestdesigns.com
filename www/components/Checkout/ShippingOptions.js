@@ -21,22 +21,19 @@ export default ({ shippingAddress, value, setValue }) => {
   const classes = useStyles()
   const isDomestic = shippingAddress.country == 'US'
   if (!value) {
-    setValue(isDomestic ? '5.99' : '7.99')
+    setValue(isDomestic ? '6.99' : '10.99')
   }
   // TODO: re-implement free shipping
   const options = isDomestic ? <>
-    <FormControlLabel value="5.99" control={<Radio />} label="First Class (Includes Insurance): $5.99" />
-    <FormControlLabel value="7.99" control={<Radio />} label="Priority (Includes Insurance): $7.99" />
+    <FormControlLabel value="6.99" control={<Radio />} label="Ground Advantage (Includes Insurance): $6.99" />
+    <FormControlLabel value="10.99" control={<Radio />} label="Priority (Includes Insurance): $10.99" />
     <FormControlLabel
       value="0.00"
       disabled
       control={<Radio />}
       label="Free Shipping Over $75"
     />
-  </> : <>
-    <FormControlLabel value="16.99" control={<Radio />} label="First Class International (No Insurance): $16.99" />
-    <FormControlLabel value="36.99" control={<Radio />} label="Priority International (Includes Insurance): $36.99" />
-  </>
+  
 
   return <>
     <FormControl component="fieldset" className={classes.formControl}>
