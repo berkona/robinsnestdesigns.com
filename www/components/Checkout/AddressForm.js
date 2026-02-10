@@ -102,7 +102,7 @@ const AddressForm = ({
 
   const isShippingAmountValid =
     shippingAddress.country === "US"
-      ? ["6.99", "11.99", "0.00"].indexOf(shippingType) !== -1;
+      ? ["7.99", "11.99", "0.00"].indexOf(shippingType) !== -1;
 
   const isAddressValid = !!(
     shippingAddress.firstName &&
